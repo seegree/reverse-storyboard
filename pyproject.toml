@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "edit-detector"
+version = "0.1.0"
+description = "Offline video shot breakdowns with local captions and embedded Word images"
+requires-python = ">=3.10"
+dependencies = [
+  "scenedetect[opencv-headless]==0.6.7.1",
+  "opencv-python-headless==5.0.0.93",
+  "python-docx==1.2.0",
+  "Pillow==12.3.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "psutil>=6,<8", "pyinstaller>=6,<7"]
+
+[project.scripts]
+edit-detector = "edit_detector.cli:main"
+
+[project.gui-scripts]
+edit-detector-gui = "edit_detector.gui:main"
+
+[tool.setuptools.packages.find]
+include = ["edit_detector*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: requires real FFmpeg decoding", "model: requires local llama.cpp and model files"]
