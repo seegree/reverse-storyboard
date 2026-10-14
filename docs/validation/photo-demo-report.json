@@ -1,0 +1,58 @@
+{
+  "output": "samples/photo-demo.docx",
+  "shots": [
+    {
+      "number": 1,
+      "start_frame": 0,
+      "end_frame": 48,
+      "fps": 24.0,
+      "midpoint_frame": 23,
+      "start_seconds": 0.0,
+      "end_seconds": 2.0,
+      "caption": {
+        "text": "On a wooden table is a red cup filled with tea and a silver spoon.",
+        "raw": "On a wooden table is a red cup filled with tea and a silver spoon.",
+        "seconds": 10.4513888329966,
+        "attempts": 2
+      }
+    },
+    {
+      "number": 2,
+      "start_frame": 48,
+      "end_frame": 96,
+      "fps": 24.0,
+      "midpoint_frame": 71,
+      "start_seconds": 2.0,
+      "end_seconds": 4.0,
+      "caption": {
+        "text": "In this image there is a cat in the front.",
+        "raw": "In this image there is a cat in the front.",
+        "seconds": 3.621951082954183,
+        "attempts": 2
+      }
+    },
+    {
+      "number": 3,
+      "start_frame": 96,
+      "end_frame": 144,
+      "fps": 24.0,
+      "midpoint_frame": 119,
+      "start_seconds": 4.0,
+      "end_seconds": 6.0,
+      "caption": {
+        "text": "The woman is standing in front of a flag.",
+        "raw": "The woman is standing in front of a flag.",
+        "seconds": 1.8072764580138028,
+        "attempts": 1
+      }
+    }
+  ],
+  "timings": {
+    "detection_seconds": 0.08607525005936623,
+    "extraction_seconds": 0.05704729200806469,
+    "captioning_seconds": 15.88105283305049,
+    "document_seconds": 0.015666082967072725,
+    "total_seconds": 16.040432999958284
+  },
+  "model": "runtime/models/SmolVLM-256M-Instruct-Q8_0.gguf"
+}

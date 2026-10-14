@@ -1,0 +1,114 @@
+[
+  {
+    "size": "256",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000001.jpg",
+    "text": "In this image, we can see a person holding a glass.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000002.jpg",
+    "text": "In this image, we can see a cartoon image of a person and a cartoon image of a person.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000003.jpg",
+    "text": "In this image, we can see a woman holding a wine glass and holding a wine bottle.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000004.jpg",
+    "text": "In this image, we can see a cartoon image of a person.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000001.jpg",
+    "text": "In this image, we can see a person holding a glass.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000002.jpg",
+    "text": "In this image we can see a cartoon image of a person and a cartoon image of a person.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000003.jpg",
+    "text": "In this image we can see a woman holding a wine glass and holding a wine bottle in her hand.",
+    "attempts": 1
+  },
+  {
+    "size": "256",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000004.jpg",
+    "text": "This is an animated image.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000001.jpg",
+    "text": "A scene from a movie or animated film, featuring a character with dark hair and blue eyes.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000002.jpg",
+    "text": "The image features a scene from an animated movie, likely depicting a character or scene from a story.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000003.jpg",
+    "text": "A woman holding a knife and fork.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe the main subject of this image in a single short sentence.",
+    "image": "shot_000004.jpg",
+    "text": "The image features a character with blond hair and glasses, looking towards the right of the frame.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000001.jpg",
+    "text": "A cartoon image of a woman holding a wine glass.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000002.jpg",
+    "text": "In this image we can see a cartoon image of a person holding a lantern.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000003.jpg",
+    "text": "An animated character holding a knife and fork is sitting at a table.",
+    "attempts": 1
+  },
+  {
+    "size": "500",
+    "prompt": "Describe this image in one sentence.",
+    "image": "shot_000004.jpg",
+    "text": "In this image we can see a person wearing a suit and spectacles.",
+    "attempts": 1
+  }
+]

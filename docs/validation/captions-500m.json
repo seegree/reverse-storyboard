@@ -1,0 +1,74 @@
+[
+  {
+    "image": "coffee.png",
+    "temperature": 0.0,
+    "text": "Cup of coffee on saucer.",
+    "raw": "Cup of coffee on saucer.",
+    "seconds": 1.5470045420806855,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.0,
+    "text": "A close-up of a tabby cat with wide green eyes.",
+    "raw": "A close-up of a tabby cat with wide green eyes.",
+    "seconds": 1.5146337919868529,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.0,
+    "text": "Woman in orange space suit with name and logo on helmet.",
+    "raw": "Woman in orange space suit with name and logo on helmet. On table a black helmet. Space shuttle in background.",
+    "seconds": 1.5574304170440882,
+    "attempts": 1
+  },
+  {
+    "image": "coffee.png",
+    "temperature": 0.0,
+    "text": "Cup of coffee on saucer.",
+    "raw": "Cup of coffee on saucer.",
+    "seconds": 1.4571626249235123,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.0,
+    "text": "A close-up of a tabby cat with wide green eyes.",
+    "raw": "A close-up of a tabby cat with wide green eyes.",
+    "seconds": 1.5199103329796344,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.0,
+    "text": "Woman in orange space suit with name and logo on helmet.",
+    "raw": "Woman in orange space suit with name and logo on helmet. On table a black helmet. Space shuttle in background.",
+    "seconds": 1.5478090000106022,
+    "attempts": 1
+  },
+  {
+    "image": "coffee.png",
+    "temperature": 0.2,
+    "text": "Cup of coffee with saucer on table.",
+    "raw": "Cup of coffee with saucer on table.",
+    "seconds": 1.4951556660234928,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.2,
+    "text": "A closeup of a tabby cat looking forward.",
+    "raw": "A closeup of a tabby cat looking forward.",
+    "seconds": 1.501462208922021,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.2,
+    "text": "Woman in orange spacesuit with name and logo on helmet.",
+    "raw": "Woman in orange spacesuit with name and logo on helmet. On table next to helmet. Space shuttle in background.",
+    "seconds": 1.5619189579738304,
+    "attempts": 1
+  }
+]

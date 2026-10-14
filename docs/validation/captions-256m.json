@@ -1,0 +1,74 @@
+[
+  {
+    "image": "coffee.png",
+    "temperature": 0.0,
+    "text": "The cup of coffee is on the red saucer.",
+    "raw": "The cup of coffee is on the red saucer.",
+    "seconds": 1.3093502080300823,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.0,
+    "text": "The cat is in front of a blurry background.",
+    "raw": "The cat is in front of a blurry background.",
+    "seconds": 1.1853222500067204,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.0,
+    "text": "The woman is standing and smiling.",
+    "raw": "The woman is standing and smiling.",
+    "seconds": 1.2304640830261633,
+    "attempts": 1
+  },
+  {
+    "image": "coffee.png",
+    "temperature": 0.0,
+    "text": "The cup of coffee is on the red saucer.",
+    "raw": "The cup of coffee is on the red saucer.",
+    "seconds": 1.2388607080793008,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.0,
+    "text": "The cat is in front of a blurry background.",
+    "raw": "The cat is in front of a blurry background.",
+    "seconds": 1.2185848749941215,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.0,
+    "text": "The woman is standing and smiling.",
+    "raw": "The woman is standing and smiling.",
+    "seconds": 1.2739252500468865,
+    "attempts": 1
+  },
+  {
+    "image": "coffee.png",
+    "temperature": 0.2,
+    "text": "The cup is filled with coffee.",
+    "raw": "The cup is filled with coffee.",
+    "seconds": 1.2214802079834044,
+    "attempts": 1
+  },
+  {
+    "image": "cat.png",
+    "temperature": 0.2,
+    "text": "The cat is in front of a blurry background.",
+    "raw": "The cat is in front of a blurry background.",
+    "seconds": 1.239462458062917,
+    "attempts": 1
+  },
+  {
+    "image": "astronaut.png",
+    "temperature": 0.2,
+    "text": "The woman is standing and smiling.",
+    "raw": "The woman is standing and smiling.",
+    "seconds": 1.1942131250398234,
+    "attempts": 1
+  }
+]

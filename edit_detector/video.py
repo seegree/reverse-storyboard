@@ -105,6 +105,16 @@ def detect_shots(path: Path, *, threshold=27.0, min_scene_frames=2, cancel=None,
             video._cap.release()
 
 
+def _frame_selector(indices: list[int]) -> str:
+    # FFmpeg's expression parser cannot handle a long left-deep sum (1000+ cuts).
+    # A balanced conditional tree has logarithmic depth and evaluates one branch.
+    if len(indices) == 1:
+        return f"eq(n\\,{indices[0]})"
+    middle = len(indices) // 2
+    return (f"if(lt(n\\,{indices[middle]})\\,"
+            f"{_frame_selector(indices[:middle])}\\,{_frame_selector(indices[middle:])})")
+
+
 def extract_frames(path: Path, shots: list[Shot], folder: Path, *, max_size=1280, cancel=None, progress=None) -> list[Path]:
     if not shots:
         raise AppError("There are no shots to extract.")
@@ -117,7 +127,7 @@ def extract_frames(path: Path, shots: list[Shot], folder: Path, *, max_size=1280
         progress(f"Extracting {len(shots)} midpoint images…", None)
     # A script avoids the Windows command-line length limit for many shots.
     # Using decoded frame indices avoids imprecise GOP seeking and VFR time drift.
-    select = "+".join(f"eq(n\\,{s.midpoint_frame})" for s in shots)
+    select = _frame_selector([s.midpoint_frame for s in shots])
     # Correct non-square pixels before bounding both dimensions; FFmpeg autorotates.
     scale = f"scale=iw*sar:ih,setsar=1,scale=w='min({max_size},iw)':h='min({max_size},ih)':force_original_aspect_ratio=decrease"
     with tempfile.TemporaryDirectory(prefix="shot-filter-") as temp:

@@ -1,0 +1,73 @@
+{
+  "output": "samples/megamind-shots.docx",
+  "shots": [
+    {
+      "number": 1,
+      "start_frame": 0,
+      "end_frame": 98,
+      "fps": 23.976,
+      "midpoint_frame": 48,
+      "start_seconds": 0.0,
+      "end_seconds": 4.087420754087421,
+      "caption": {
+        "text": "It is a movie.",
+        "raw": "It is a movie.",
+        "seconds": 1.451405750005506,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 2,
+      "start_frame": 98,
+      "end_frame": 154,
+      "fps": 23.976,
+      "midpoint_frame": 125,
+      "start_seconds": 4.087420754087421,
+      "end_seconds": 6.42308975642309,
+      "caption": {
+        "text": "The animated image depicts two people, one of whom is a young man with glasses, smiling, while the other is a young woman with short hair.",
+        "raw": "The animated image depicts two people, one of whom is a young man with glasses, smiling, while the other is a young woman with short hair.",
+        "seconds": 1.5205063340254128,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 3,
+      "start_frame": 154,
+      "end_frame": 200,
+      "fps": 23.976,
+      "midpoint_frame": 176,
+      "start_seconds": 6.42308975642309,
+      "end_seconds": 8.341675008341676,
+      "caption": {
+        "text": "It is a painting.",
+        "raw": "It is a painting.",
+        "seconds": 2.7002112499903888,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 4,
+      "start_frame": 200,
+      "end_frame": 270,
+      "fps": 23.976,
+      "midpoint_frame": 234,
+      "start_seconds": 8.341675008341676,
+      "end_seconds": 11.26126126126126,
+      "caption": {
+        "text": "The man is looking to the right.",
+        "raw": "The man is looking to the right.",
+        "seconds": 2.396327416994609,
+        "attempts": 1
+      }
+    }
+  ],
+  "timings": {
+    "detection_seconds": 0.4527929159812629,
+    "extraction_seconds": 0.1280500830616802,
+    "captioning_seconds": 8.069062458002008,
+    "document_seconds": 0.026172459009103477,
+    "total_seconds": 8.677053000079468
+  },
+  "model": "runtime/models/SmolVLM-256M-Instruct-Q8_0.gguf"
+}

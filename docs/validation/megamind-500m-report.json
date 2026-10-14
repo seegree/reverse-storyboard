@@ -1,0 +1,73 @@
+{
+  "output": "samples/megamind-500m.docx",
+  "shots": [
+    {
+      "number": 1,
+      "start_frame": 0,
+      "end_frame": 98,
+      "fps": 23.976,
+      "midpoint_frame": 48,
+      "start_seconds": 0.0,
+      "end_seconds": 4.087420754087421,
+      "caption": {
+        "text": "A cartoon woman holds a wine glass.",
+        "raw": "A cartoon woman holds a wine glass.",
+        "seconds": 1.4532504579983652,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 2,
+      "start_frame": 98,
+      "end_frame": 154,
+      "fps": 23.976,
+      "midpoint_frame": 125,
+      "start_seconds": 4.087420754087421,
+      "end_seconds": 6.42308975642309,
+      "caption": {
+        "text": "Two animated characters are looking at a lantern.",
+        "raw": "Two animated characters are looking at a lantern.",
+        "seconds": 1.6266083749942482,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 3,
+      "start_frame": 154,
+      "end_frame": 200,
+      "fps": 23.976,
+      "midpoint_frame": 176,
+      "start_seconds": 6.42308975642309,
+      "end_seconds": 8.341675008341676,
+      "caption": {
+        "text": "A cartoon woman holds a knife and fork.",
+        "raw": "A cartoon woman holds a knife and fork.",
+        "seconds": 1.7291832079645246,
+        "attempts": 1
+      }
+    },
+    {
+      "number": 4,
+      "start_frame": 200,
+      "end_frame": 270,
+      "fps": 23.976,
+      "midpoint_frame": 234,
+      "start_seconds": 8.341675008341676,
+      "end_seconds": 11.26126126126126,
+      "caption": {
+        "text": "A man with glasses.",
+        "raw": "A man with glasses.",
+        "seconds": 1.505024041980505,
+        "attempts": 1
+      }
+    }
+  ],
+  "timings": {
+    "detection_seconds": 0.13510700000915676,
+    "extraction_seconds": 0.1149253329494968,
+    "captioning_seconds": 6.314607249922119,
+    "document_seconds": 0.015542458044365048,
+    "total_seconds": 6.580844542011619
+  },
+  "model": "runtime/models/SmolVLM-500M-Instruct-Q8_0.gguf"
+}

@@ -7,6 +7,8 @@ dist/
 runtime/bin/*
 runtime/models/*
 runtime/downloads/
+runtime/windows/
+runtime/manifest-*.json
 !runtime/bin/.gitkeep
 !runtime/models/.gitkeep
 samples/*
