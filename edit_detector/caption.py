@@ -7,7 +7,7 @@ import re
 import time
 
 from .config import executable, runtime_root
-from .errors import AppError
+from .errors import AppError, CaptionResponseError
 from .process import check_cancel, run_process
 
 PROMPT = (
@@ -81,4 +81,4 @@ class LlamaCaptioner:
                 return Caption(text, raw.strip(), time.perf_counter() - start, attempt)
             except ValueError as exc:
                 last = str(exc)
-        raise AppError(f"Captioning failed for {image.name} after two attempts. {last}")
+        raise CaptionResponseError(f"Captioning failed for {image.name} after two attempts. {last}")

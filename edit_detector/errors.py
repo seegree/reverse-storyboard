@@ -4,3 +4,7 @@ class AppError(Exception):
 
 class Cancelled(AppError):
     pass
+
+
+class CaptionResponseError(AppError):
+    """Inference completed, but its response could not be used as a caption."""

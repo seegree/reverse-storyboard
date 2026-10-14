@@ -7,7 +7,7 @@ import shutil
 
 from .caption import Caption, LlamaCaptioner
 from .document import format_timecode, write_document
-from .errors import AppError, Cancelled
+from .errors import AppError, Cancelled, CaptionResponseError
 from .process import check_cancel
 from .video import detect_shots, extract_frames
 
@@ -66,6 +66,7 @@ def analyze(video: Path, output: Path, *, captioner=None, threshold=27.0, min_sc
             emit(f"Captioning shot {shot.number} of {len(shots)}…", (shot.number - 1) / len(shots))
             caption_started = time.perf_counter()
             caption_error = None
+            caption_error_kind = None
             try:
                 caption = captioner.caption(image, cancel=cancel)
             except Cancelled:
@@ -73,11 +74,12 @@ def analyze(video: Path, output: Path, *, captioner=None, threshold=27.0, min_sc
             except (AppError, OSError) as exc:
                 check_cancel(cancel)
                 caption_error = str(exc)
+                caption_error_kind = "invalid_response" if isinstance(exc, CaptionResponseError) else "runtime"
                 caption = Caption("[Caption unavailable — add a description in Word.]", "",
                                   time.perf_counter() - caption_started, 0)
                 emit(f"Shot {shot.number}: caption unavailable; keeping its image and continuing.")
             captions.append(caption.text)
-            records.append({**shot.record(), "caption": asdict(caption), "caption_error": caption_error})
+            records.append({**shot.record(), "caption": asdict(caption), "caption_error": caption_error, "caption_error_kind": caption_error_kind})
         timings["captioning_seconds"] = time.perf_counter() - start
         emit("Writing Word document…", 1.0)
         start = time.perf_counter()
