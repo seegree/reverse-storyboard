@@ -5,9 +5,9 @@ import time
 import json
 import shutil
 
-from .caption import LlamaCaptioner
+from .caption import Caption, LlamaCaptioner
 from .document import format_timecode, write_document
-from .errors import AppError
+from .errors import AppError, Cancelled
 from .process import check_cancel
 from .video import detect_shots, extract_frames
 
@@ -19,6 +19,10 @@ class AnalysisResult:
     timings: dict[str, float]
     model: str
     images_folder: str | None = None
+
+    @property
+    def caption_failures(self):
+        return [shot for shot in self.shots if shot.get("caption_error")]
 
     def record(self):
         return asdict(self)
@@ -60,9 +64,20 @@ def analyze(video: Path, output: Path, *, captioner=None, threshold=27.0, min_sc
         start = time.perf_counter()
         for shot, image in zip(shots, images):
             emit(f"Captioning shot {shot.number} of {len(shots)}…", (shot.number - 1) / len(shots))
-            caption = captioner.caption(image, cancel=cancel)
+            caption_started = time.perf_counter()
+            caption_error = None
+            try:
+                caption = captioner.caption(image, cancel=cancel)
+            except Cancelled:
+                raise
+            except (AppError, OSError) as exc:
+                check_cancel(cancel)
+                caption_error = str(exc)
+                caption = Caption("[Caption unavailable — add a description in Word.]", "",
+                                  time.perf_counter() - caption_started, 0)
+                emit(f"Shot {shot.number}: caption unavailable; keeping its image and continuing.")
             captions.append(caption.text)
-            records.append({**shot.record(), "caption": asdict(caption)})
+            records.append({**shot.record(), "caption": asdict(caption), "caption_error": caption_error})
         timings["captioning_seconds"] = time.perf_counter() - start
         emit("Writing Word document…", 1.0)
         start = time.perf_counter()

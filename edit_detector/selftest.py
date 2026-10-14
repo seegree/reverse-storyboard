@@ -22,5 +22,7 @@ def run_selftest(folder: Path, progress=print):
     with ZipFile(result.output) as doc:
         if len([n for n in doc.namelist() if n.startswith("word/media/")]) != 3:
             raise AppError("Self-test DOCX does not contain three embedded images.")
+    if result.caption_failures:
+        raise AppError(f"Self-test saved the document but {len(result.caption_failures)} local captions failed; check the caption runtime.")
     progress(f"PASS: three ordered shots, local CPU captions, three embedded images. {result.output}")
     return result

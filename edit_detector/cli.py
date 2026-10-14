@@ -98,6 +98,10 @@ def main(argv=None) -> int:
                     args.report.parent.mkdir(parents=True, exist_ok=True)
                     args.report.write_text(json.dumps(result.record(), indent=2), encoding="utf-8")
                 print(f"Saved {len(result.shots)} shots to {result.output} in {result.timings['total_seconds']:.2f}s")
+                for shot in result.caption_failures:
+                    print(f"Warning: shot {shot['number']} has a caption placeholder. {shot['caption_error']}", file=sys.stderr)
+                if result.caption_failures:
+                    print("All shot images were saved. Replace the marked caption placeholders in Word.", file=sys.stderr)
                 if result.images_folder:
                     print(f"Images: {result.images_folder}")
         return 0

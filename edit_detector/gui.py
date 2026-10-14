@@ -30,6 +30,7 @@ class Application:
         self.output = None
         self.images_folder = None
         self.closing = False
+        self.caption_details = ""
         root.title("Edit Detector")
         root.minsize(720, 540)
         root.protocol("WM_DELETE_WINDOW", self.close)
@@ -69,6 +70,9 @@ class Application:
         self.folder_button.pack(side="left", padx=8)
         self.images_button = ttk.Button(result, text="Open shot images", command=self.open_images, state="disabled")
         self.images_button.pack(side="left")
+        self.details_button = ttk.Button(result, text="Caption issues…", state="disabled",
+            command=lambda: messagebox.showwarning("Caption issues", self.caption_details))
+        self.details_button.pack(side="left", padx=8)
         ttk.Separator(panel).grid(row=8, column=0, columnspan=2, sticky="ew", pady=18)
         ttk.Label(panel, text="Make a shorter version", font=("Segoe UI", 14)).grid(row=9, column=0, columnspan=2, sticky="w")
         ttk.Label(panel, text="Keep the numbers you want from this document. Save a new list numbered from 1.", wraplength=640).grid(row=10, column=0, columnspan=2, sticky="w", pady=(5, 10))
@@ -103,6 +107,7 @@ class Application:
             self.open_button.configure(state="disabled")
             self.folder_button.configure(state="disabled")
             self.images_button.configure(state="disabled")
+            self.details_button.configure(state="disabled")
             self.bar.configure(mode="indeterminate")
             self.bar.start(12)
         else:
@@ -120,6 +125,7 @@ class Application:
         self.cancel.clear()
         self.output = None
         self.images_folder = None
+        self.caption_details = ""
         include_timecodes = self.include_timecodes.get()
         images_folder = None
         if self.export_images.get():
@@ -204,6 +210,15 @@ class Application:
                         self.images_folder = Path(value.images_folder) if value.images_folder else None
                         self.bar.configure(mode="determinate", value=100)
                         self.status.set(f"Saved {len(value.shots)} shots in {value.timings['total_seconds']:.1f} seconds. Review captions in Word.")
+                        if value.caption_failures:
+                            numbers = ", ".join(str(shot["number"]) for shot in value.caption_failures)
+                            self.status.set(f"Saved all {len(value.shots)} shots. {len(value.caption_failures)} captions need attention. Open Word and replace the marked placeholders; see Caption issues for details.")
+                            self.caption_details = (
+                                f"The document was saved with every shot image. Missing captions: {numbers}.\n\n"
+                                "Open the Word document and replace each [Caption unavailable] placeholder with your own description. "
+                                "You can still use Save selected shots to make a shorter version.\n\n"
+                                + "\n\n".join(f"Shot {shot['number']}: {shot['caption_error']}" for shot in value.caption_failures))
+                            self.details_button.configure(state="normal")
                         self.open_button.configure(state="normal")
                         self.folder_button.configure(state="normal")
                         if self.images_folder:
@@ -217,9 +232,9 @@ class Application:
                         if self.images_folder:
                             self.images_button.configure(state="normal")
                     elif kind == "cancelled":
-                        self.status.set("Analysis cancelled.")
+                        self.status.set("Operation cancelled. No new document was saved.")
                     else:
-                        self.status.set("Analysis failed. You can correct the issue and try again.")
+                        self.status.set(f"Could not save the result: {value}")
                         if not self.closing:
                             messagebox.showerror("Analysis failed", value)
         except queue.Empty:

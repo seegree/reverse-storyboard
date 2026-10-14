@@ -55,3 +55,7 @@ Sources: [OpenCV Megamind sample](https://github.com/opencv/opencv/blob/4.x/samp
 - Rendered and visually checked both pages of the timecoded sample and the single page of its shortened version. Numbering, image placement and retained time ranges are correct.
 - Actual Tk GUI worker/event-loop smoke test passed with both options enabled and a subsequent selection of shots 1 and 3. The resulting document contains two images and timecodes; its displayed list restarts at 1.
 - Windows execution remains untested.
+
+## Caption failure recovery — 2026-10-14
+
+40 tests pass, including last-shot failure, all-caption failure, preserved successful captions/images, and cancellation preserving an existing document. An actual Mac GUI smoke test injected a failure on the final shot: all three shots saved, the persistent status and Caption issues button exposed the failure, and selection revision still succeeded. The revised Word page was rendered and visually checked with the placeholder and corresponding image intact. No claim is made to have reproduced the user's specific model failure; its original diagnostic was unavailable.

@@ -20,6 +20,8 @@ The setup script downloads FFmpeg, FFprobe, the CPU build of llama.cpp, and the 
 
 Once a portable Windows distribution has been built and validated, end users only unzip the entire folder and launch `EditDetector.exe`. Keep `runtime` and `_internal` beside the EXE. End users will not install Python or backends. That Windows validation is still outstanding.
 
+If an individual caption fails, analysis continues and saves every shot image. The affected entries say **[Caption unavailable — add a description in Word.]**. Replace those placeholders in Word, or omit them when making a shorter version. The GUI's **Caption issues…** button lists the affected shot numbers and error details; CLI reports and exported image manifests also retain the errors. Cancellation still stops the operation, and missing runtime/model files are reported before analysis starts.
+
 ## Output options and shorter versions
 
 The GUI has checkboxes for **Include elapsed timecodes** and **Also save a folder of shot images**. The image folder is saved beside the Word document, with numbered JPEGs and a `shots.json` manifest. Existing image folders are preserved by choosing a new folder name. With the checkbox off, intermediate images remain temporary.

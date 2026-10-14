@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("video", type=Path)
 parser.add_argument("--output", type=Path, required=True)
 parser.add_argument("--cancel", action="store_true")
+parser.add_argument("--caption-failure", action="store_true", help="Inject a last-shot caption failure")
 parser.add_argument("--options-and-revise", action="store_true")
 args = parser.parse_args()
 if args.output.exists():
@@ -19,6 +20,19 @@ if args.output.exists():
 gui.filedialog.asksaveasfilename = lambda **kwargs: str(args.output.resolve())
 errors = []
 gui.messagebox.showerror = lambda title, message: errors.append((title, message))
+if args.caption_failure:
+    from edit_detector.caption import Caption
+    from edit_detector.errors import AppError
+    real_analyze = gui.analyze
+    class TestCaptioner:
+        def __init__(self):
+            self.count = 0
+        def caption(self, image, **kwargs):
+            self.count += 1
+            if self.count == 3:
+                raise AppError("Injected last-shot caption timeout")
+            return Caption("Test scene", "Test scene", 0, 1)
+    gui.analyze = lambda *a, **kw: real_analyze(*a, captioner=TestCaptioner(), **kw)
 root = tk.Tk()
 app = gui.Application(root)
 app.path.set(str(args.video.resolve()))
@@ -37,6 +51,10 @@ def inspect():
         root.destroy()
         return
     if app.worker is not None and not app.worker.is_alive() and app.events.empty():
+        if args.caption_failure and not revised:
+            assert "Shot 3:" in app.caption_details
+            assert str(app.details_button['state']) == 'normal'
+            assert '1 captions need attention' in app.status.get()
         if args.options_and_revise and not revised:
             assert app.images_folder.is_dir()
             assert app.revision_source.get() == str(args.output.resolve())

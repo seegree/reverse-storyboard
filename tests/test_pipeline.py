@@ -43,16 +43,37 @@ def test_pipeline_order_embedding_and_cleanup(staged_video, tmp_path):
         assert len([n for n in doc.namelist() if n.startswith("word/media/")]) == 2
 
 
-def test_inference_failure_leaves_previous_document_and_cleans_temp(staged_video, tmp_path):
+@pytest.mark.parametrize("failed_shots", [{2}, {1, 2}])
+def test_caption_failures_keep_all_images_and_successful_captions(staged_video, tmp_path, failed_shots):
+    from docx import Document
     video, frames = staged_video
-    target = tmp_path / "result.docx"
-    target.write_bytes(b"previous result")
     class FailingCaptioner:
-        def caption(self, *a, **kw):
-            raise AppError("inference failed")
-    with pytest.raises(AppError, match="inference failed"):
-        analyze(video, target, captioner=FailingCaptioner(), overwrite=True)
-    assert target.read_bytes() == b"previous result"
+        def caption(self, image, **kw):
+            if int(image.stem) in failed_shots:
+                raise AppError("model timed out")
+            return Caption("Red cup", "Red cup", 0, 1)
+    result = analyze(video, tmp_path / "result.docx", captioner=FailingCaptioner())
+    doc = Document(result.output)
+    assert len(doc.inline_shapes) == 2
+    assert [s["number"] for s in result.caption_failures] == sorted(failed_shots)
+    for n in (1, 2):
+        text = doc.paragraphs[n * 2].text
+        assert ("Caption unavailable" in text) == (n in failed_shots)
+        if n not in failed_shots:
+            assert text == "Red cup"
+    assert all(not p.exists() for p in frames)
+
+
+def test_cancel_exception_is_not_a_caption_failure(staged_video, tmp_path):
+    video, frames = staged_video
+    target = tmp_path / "existing.docx"
+    target.write_bytes(b"previous document")
+    class CancellingCaptioner:
+        def caption(self, image, **kw):
+            raise Cancelled("User cancelled")
+    with pytest.raises(Cancelled):
+        analyze(video, target, captioner=CancellingCaptioner(), overwrite=True)
+    assert target.read_bytes() == b"previous document"
     assert all(not p.exists() for p in frames)
 
 
