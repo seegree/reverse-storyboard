@@ -11,16 +11,23 @@ from docx import Document
 from PIL import Image
 
 
+def portable_environment(environment):
+    # Windows variable names are case-insensitive, but dict(os.environ) keys
+    # are normalized to uppercase. Preserve this when isolating child processes.
+    system_root = next(value for key, value in environment.items() if key.casefold() == 'systemroot')
+    env = {key: value for key, value in environment.items()
+           if key.casefold() not in {'path', 'pythonpath', 'edit_detector_runtime'}}
+    env['PATH'] = os.pathsep.join([str(Path(system_root) / 'System32'), system_root])
+    return env
+
+
 def validate(bundle, folder, *, windows_only=True):
     if windows_only and os.name != 'nt':
         raise RuntimeError('Run portable validation on Windows.')
     bundle, folder = bundle.resolve(), folder.resolve()
     folder.mkdir(parents=True, exist_ok=False)
     cli = bundle / 'EditDetector-CLI.exe'
-    env = os.environ.copy()
-    env.pop('PYTHONPATH', None)
-    env.pop('EDIT_DETECTOR_RUNTIME', None)
-    env['PATH'] = os.pathsep.join([str(Path(env['SystemRoot']) / 'System32'), env['SystemRoot']])
+    env = portable_environment(os.environ)
     report = {'status': 'running', 'bundle': str(bundle), 'checks': []}
 
     def run(*args):
