@@ -71,3 +71,7 @@ Implemented the layout, copy and dark palette from design/HANDOFF.md in Tkinter.
 All 49 automated tests pass. Actual Mac Tk runs passed for real-model analysis and for an injected caption failure followed by revision. scripts/check_gui_states.py checks idle, chosen video, progress, success, singular/plural warnings, revision, cancellation and errors, automatic source-document selection, placeholder behavior and horizontal button bounds. The app uses stage progress where supplied and an indeterminate indicator during detection/extraction; it does not invent overall progress percentages.
 
 Visual screenshot inspection was blocked by missing Computer Use permissions. The user opted to inspect the open fixture preview manually instead of granting broad app access. Visual acceptance remains pending that feedback. Windows execution remains untested. The static HTML and PNG references are not included in the application or source archive.
+
+## Compact desktop layout — 2026-10-14
+
+Reduced nested padding and vertical gaps, moved analysis actions beside the option tiles, and aligned the shots label/input/save action horizontally. Default window is 900×700; the scrollbar appears only when needed. Actual Tk layout checks at 800×700 and 900×700 measured 654px content height, including the caption warning and shortening section, so neither required scrolling. All UI-state checks and the injected-caption-failure analysis/revision smoke test pass. All 49 automated tests pass. The user is evaluating the visual spacing manually; no Computer Use access was requested.

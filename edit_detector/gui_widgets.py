@@ -39,7 +39,7 @@ def configure_theme(root):
         ('Warning.TButton', '#3A2F1A', '#F6DDA6', '#8A6B2A'),
     ]:
         style.configure(name, background=background, foreground=foreground, bordercolor=border,
-                        lightcolor=background, darkcolor=background, padding=(16, 10),
+                        lightcolor=background, darkcolor=background, padding=(14, 8),
                         borderwidth=1, relief='flat', focuscolor=foreground, anchor='center')
         style.map(name, background=[('disabled', CARD), ('pressed', border), ('active', background)],
                   foreground=[('disabled', '#77787E')], bordercolor=[('disabled', BORDER)])
@@ -49,7 +49,7 @@ def configure_theme(root):
               foreground=[('disabled', MUTED)],
               indicatorbackground=[('selected', ACCENT), ('!selected', TEXT)])
     style.configure('TEntry', fieldbackground=CARD, foreground=TEXT, insertcolor=TEXT,
-                    bordercolor=BORDER, lightcolor=CARD, darkcolor=CARD, padding=(12, 9))
+                    bordercolor=BORDER, lightcolor=CARD, darkcolor=CARD, padding=(12, 8))
     style.map('TEntry', bordercolor=[('focus', ACCENT)], fieldbackground=[('disabled', INSET)])
     style.configure('Horizontal.TProgressbar', background=ACCENT, troughcolor=INSET,
                     borderwidth=0, lightcolor=ACCENT, darkcolor=ACCENT, thickness=6)

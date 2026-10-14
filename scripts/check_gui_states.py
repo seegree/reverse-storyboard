@@ -12,10 +12,12 @@ from edit_detector.revision import RevisionResult
 import edit_detector.gui as gui
 
 parser = argparse.ArgumentParser()
+parser.add_argument('--geometry', default='900x700', help='Window size for layout checks')
 parser.add_argument('--preview', action='store_true', help='Leave the fixture window open for visual review')
 args = parser.parse_args()
 root = tk.Tk()
 app = Application(root)
+root.geometry(args.geometry)
 root.update()
 assert not app.results.winfo_ismapped()
 assert str(app.analyze_button['state']) == 'disabled'
@@ -80,6 +82,8 @@ assert app.keep_hint.winfo_ismapped()
 # All controls must fit horizontally; vertical overflow is intentionally scrollable.
 assert app.revise_button.winfo_rootx() + app.revise_button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
 assert app.images_button.winfo_rootx() + app.images_button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
+assert app.content_panel.winfo_reqheight() <= app.viewport.winfo_height(), (app.content_panel.winfo_reqheight(), app.viewport.winfo_height())
+print(f'Layout: content {app.content_panel.winfo_reqheight()}px, viewport {app.viewport.winfo_height()}px', flush=True)
 print('PASS: idle, chosen, running, success, warning counts, revision, cancellation and error states', flush=True)
 if args.preview:
     root.title('Edit Detector — Design preview (simulated caption issue)')
