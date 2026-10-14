@@ -59,7 +59,7 @@ def test_missing_and_corrupt_video(tmp_path):
         detect_shots(tmp_path / "missing.mp4")
     bad = tmp_path / "bad.mp4"
     bad.write_bytes(b"not a video")
-    with pytest.raises(AppError, match="ffprobe failed"):
+    with pytest.raises(AppError, match=r"ffprobe(?:\.exe)? failed"):
         detect_shots(bad)
 
 

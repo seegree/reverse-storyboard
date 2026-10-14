@@ -14,14 +14,11 @@ A cloud review uploads your selected test video to that Cloud PC. Start with gen
 
 ## Getting the first build
 
-This project currently has no configured Git remote. The local GitHub CLI login also needs reauthentication. Before a Windows build can run:
+The private repository is [seegree/reverse-storyboard](https://github.com/seegree/reverse-storyboard). The first Windows build was started on 2026-10-14. Open [Windows portable build runs](https://github.com/seegree/reverse-storyboard/actions/workflows/windows.yml) to see the current result.
 
-1. Select or create a GitHub repository for this source. A private repository is appropriate while the beta is unfinished.
-2. Authenticate GitHub on the Mac and configure that repository as the remote. Upload the source and included `.github/workflows/windows.yml`.
-3. Open **Actions → Windows portable build → Run workflow**.
-4. A successful run provides **EditDetector-Windows-x64** (the portable app) and **Windows-review-evidence** (reports and test output). A failed run still attempts to upload available review evidence.
+A successful run provides **EditDetector-Windows-x64** (the portable app) and **Windows-review-evidence** (reports and test output). A failed run still attempts to upload available review evidence. Sign in to GitHub with access to the private repository to download artifacts. Future pushes to main start another build; you can also use **Actions → Windows portable build → Run workflow**.
 
-Repository creation, source upload and a Cloud PC subscription have not been performed by this session. Choose the destination repository before publishing source.
+The Cloud PC subscription/setup has not been performed. You can review the automated Windows outputs on your Mac and transfer the portable folder to an available PC for hands-on testing instead of subscribing to a Cloud PC.
 
 ## Open the app in Windows
 
