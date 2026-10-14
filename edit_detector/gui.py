@@ -112,6 +112,7 @@ class Application:
             self.bar.start(12)
         else:
             self.bar.stop()
+            self.details_button.configure(state="normal" if self.caption_details else "disabled")
 
     def start(self):
         video = Path(self.path.get().strip()).expanduser()
@@ -214,6 +215,7 @@ class Application:
                             numbers = ", ".join(str(shot["number"]) for shot in value.caption_failures)
                             self.status.set(f"Saved all {len(value.shots)} shots. {len(value.caption_failures)} captions need attention. Open Word and replace the marked placeholders; see Caption issues for details.")
                             self.caption_details = (
+                                f"Original analysis: {value.output}\nShot numbers below refer to that original document, before any selection or renumbering.\n\n"
                                 f"The document was saved with every shot image. Missing captions: {numbers}.\n\n"
                                 "Open the Word document and replace each [Caption unavailable] placeholder with your own description. "
                                 "You can still use Save selected shots to make a shorter version.\n\n"

@@ -85,7 +85,10 @@ def main(argv=None) -> int:
                 print(f"{caption.seconds:.2f} seconds; {caption.attempts} attempt(s)", file=sys.stderr)
             else:
                 output = args.output or args.video.with_name(args.video.stem + "-shots.docx")
+                images_dir = args.images_dir or (output.with_name(output.stem + "-images") if args.export_images else None)
                 if args.report:
+                    if images_dir is not None and args.report.resolve().is_relative_to(images_dir.expanduser().resolve()):
+                        raise AppError("Save the diagnostic report outside the shot image folder to protect exported images and their manifest.")
                     if args.report.resolve() in (output.resolve(), args.video.resolve()):
                         raise AppError("The diagnostic report must have a different path from the video and Word document.")
                     if args.report.exists() and not args.overwrite:
@@ -93,7 +96,7 @@ def main(argv=None) -> int:
                 result = analyze(args.video, output, captioner=captioner, threshold=args.threshold,
                                  min_scene_frames=args.min_scene_frames, overwrite=args.overwrite, progress=progress,
                                  include_timecodes=args.timecodes,
-                                 export_images=args.images_dir or (output.with_name(output.stem + "-images") if args.export_images else None))
+                                 export_images=images_dir)
                 if args.report:
                     args.report.parent.mkdir(parents=True, exist_ok=True)
                     args.report.write_text(json.dumps(result.record(), indent=2), encoding="utf-8")

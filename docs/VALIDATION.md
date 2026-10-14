@@ -59,3 +59,7 @@ Sources: [OpenCV Megamind sample](https://github.com/opencv/opencv/blob/4.x/samp
 ## Caption failure recovery — 2026-10-14
 
 40 tests pass, including last-shot failure, all-caption failure, preserved successful captions/images, and cancellation preserving an existing document. An actual Mac GUI smoke test injected a failure on the final shot: all three shots saved, the persistent status and Caption issues button exposed the failure, and selection revision still succeeded. The revised Word page was rendered and visually checked with the placeholder and corresponding image intact. No claim is made to have reproduced the user's specific model failure; its original diagnostic was unavailable.
+
+## Review fixes — 2026-10-14
+
+49 automated tests pass. Report paths equal to or inside either an explicit or automatically named image-export folder are rejected before analysis, including JPEG and manifest collisions and when overwrite is requested. A sibling report remains allowed. The actual Mac GUI regression test confirms that Caption issues remains clickable after revision and opens details labeled with the original document path and original shot numbering. Returning from an operation also restores available caption details after errors or cancellation.

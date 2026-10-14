@@ -65,6 +65,14 @@ def inspect():
             app.revise()
             root.after(50, inspect)
             return
+        if args.caption_failure and revised:
+            assert str(app.details_button['state']) == 'normal'
+            dialogs = []
+            gui.messagebox.showwarning = lambda title, message: dialogs.append(message)
+            app.details_button.invoke()
+            assert len(dialogs) == 1 and "Shot 3:" in dialogs[0]
+            assert "Original analysis:" in dialogs[0]
+            assert str(args.output.resolve()) in dialogs[0]
         finished.append(app.status.get())
         root.destroy()
         return
