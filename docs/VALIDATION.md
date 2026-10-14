@@ -75,3 +75,9 @@ Visual screenshot inspection was blocked by missing Computer Use permissions. Th
 ## Compact desktop layout — 2026-10-14
 
 Reduced nested padding and vertical gaps, moved analysis actions beside the option tiles, and aligned the shots label/input/save action horizontally. Default window is 900×700; the scrollbar appears only when needed. Actual Tk layout checks at 800×700 and 900×700 measured 654px content height, including the caption warning and shortening section, so neither required scrolling. All UI-state checks and the injected-caption-failure analysis/revision smoke test pass. All 49 automated tests pass. The user is evaluating the visual spacing manually; no Computer Use access was requested.
+
+## GUI review and Windows validation preparation — 2026-10-14
+
+Reviewed the compact Tk UI and fixed keyboard focus visibility in short windows, decorative canvas tab stops, and restoration of previous output actions after a failed/cancelled revision. Actual Mac Tk checks include keyboard traversal, 800×560 focus visibility, and previous result actions after a revision error. All 49 automated tests pass.
+
+Expanded the Windows CI definition with source Tk checks and a portable CLI verifier for real inference, timecodes, image exports, Unicode paths and revision, plus always-uploaded review evidence. Added a Mac-to-Windows review guide. Windows CI has not run: this checkout has no remote and its local GitHub CLI login reports an invalid token. No Windows binary, Cloud PC, repository or published review site was created. Browser-based Windows 365 Business is documented as an option; user subscription/setup is required.

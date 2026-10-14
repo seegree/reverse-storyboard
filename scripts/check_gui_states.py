@@ -83,6 +83,35 @@ assert app.keep_hint.winfo_ismapped()
 assert app.revise_button.winfo_rootx() + app.revise_button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
 assert app.images_button.winfo_rootx() + app.images_button.winfo_width() <= root.winfo_rootx() + root.winfo_width()
 assert app.content_panel.winfo_reqheight() <= app.viewport.winfo_height(), (app.content_panel.winfo_reqheight(), app.viewport.winfo_height())
+# Keyboard traversal must contain the editable selection and action buttons,
+# but not decorative canvases. Focus must reveal controls in a shorter window.
+app.browse.focus_force()
+root.update()
+visited = set()
+for _ in range(30):
+    current = root.focus_get()
+    if current is None:
+        break
+    visited.add(str(current))
+    current.tk_focusNext().focus_set()
+    root.update()
+assert str(app.keep_entry) in visited
+assert str(app.revise_button) in visited
+assert str(app.viewport) not in visited
+root.geometry('800x560')
+root.update()
+app.keep_entry.focus_force()
+root.update()
+assert app.viewport.winfo_rooty() <= app.keep_entry.winfo_rooty()
+assert app.keep_entry.winfo_rooty() + app.keep_entry.winfo_height() <= app.viewport.winfo_rooty() + app.viewport.winfo_height()
+app.busy(True)
+assert str(app.keep_entry['state']) == 'disabled'
+app.events.put(('error', 'Fixture revision error'))
+app.poll()
+assert str(app.open_button['state']) == 'normal'
+assert str(app.folder_button['state']) == 'normal'
+root.geometry(args.geometry)
+root.update()
 print(f'Layout: content {app.content_panel.winfo_reqheight()}px, viewport {app.viewport.winfo_height()}px', flush=True)
 print('PASS: idle, chosen, running, success, warning counts, revision, cancellation and error states', flush=True)
 if args.preview:

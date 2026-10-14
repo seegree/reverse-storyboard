@@ -18,6 +18,7 @@ Copy-Item runtime/models/SmolVLM-256M-Instruct-Q8_0.gguf "$destination/models/"
 Copy-Item runtime/models/mmproj-SmolVLM-256M-Instruct-Q8_0.gguf "$destination/models/"
 Copy-Item runtime/manifest-256.json $destination
 Copy-Item README.md, docs/THIRD_PARTY.md dist/EditDetector/
+Copy-Item docs/WINDOWS_REVIEW.md dist/EditDetector/START-HERE.md
 Copy-Item -Recurse docs/licenses dist/EditDetector/licenses
 # Include license metadata for the exact installed Python dependencies.
 python scripts/collect_licenses.py dist/EditDetector/licenses/python

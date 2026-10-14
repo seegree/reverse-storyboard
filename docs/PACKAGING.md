@@ -34,7 +34,7 @@ THIRD_PARTY.md
 
 Keep the folder together. There is no one-file extraction step or runtime download, server, API key or GPU dependency. The setup script runs only on developer/build machines. The 500M pair, sample media and download caches are not packaged.
 
-The included GitHub Actions workflow tests the source, builds the folder, changes outside the checkout, removes Python/backend executables from PATH, and runs the packaged CLI's `doctor` and `self-test`. The workflow has not been uploaded or executed in this session.
+The included GitHub Actions workflow tests the source, builds the folder, changes outside the checkout, removes Python/backend executables from PATH, and runs portable dependency, inference, timecode, image-export and revision checks through `scripts/validate_portable.py`. It also runs source Tk layout/keyboard and caption-recovery checks and uploads a separate review-evidence artifact. The workflow has not been uploaded or executed in this session.
 
 ## Size evidence
 
@@ -59,3 +59,5 @@ The Windows llama.cpp download was 19,398,918 bytes and the FFmpeg ZIP was 114,7
 5. Before a public binary release, include the applicable licenses and corresponding source materials described in `THIRD_PARTY.md`. Signing/installer polish is deferred.
 
 These are outstanding checks, not reported successes. Reference: [PyInstaller operating modes](https://pyinstaller.org/en/stable/operating-mode.html).
+
+The Mac-to-Windows review setup and hands-on acceptance checklist are in [WINDOWS_REVIEW.md](WINDOWS_REVIEW.md). The portable package includes it as START-HERE.md.

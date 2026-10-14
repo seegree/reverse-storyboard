@@ -40,7 +40,7 @@ class Application:
         root.protocol("WM_DELETE_WINDOW", self.close)
         configure_theme(root)
         # Keep every action reachable on laptop displays when Results expands.
-        viewport = tk.Canvas(root, background=BG, highlightthickness=0)
+        viewport = tk.Canvas(root, background=BG, highlightthickness=0, takefocus=0)
         scroll = ttk.Scrollbar(root, orient='vertical', command=viewport.yview)
         viewport.configure(yscrollcommand=scroll.set)
         viewport.pack(side='left', fill='both', expand=True)
@@ -64,6 +64,7 @@ class Application:
                 viewport.yview_scroll(amount, 'units')
         root.bind('<MouseWheel>', wheel, add='+')
         self.viewport = viewport
+        root.bind('<FocusIn>', self.reveal_focus, add='+')
         panel.columnconfigure(0, weight=1)
         ttk.Label(panel, text='EDIT DETECTOR', style='Eyebrow.TLabel').grid(row=1, sticky='e')
         ttk.Label(panel, text='Shot Breakdown', style='Title.TLabel').grid(row=1, sticky='w', pady=(2, 4))
@@ -175,6 +176,30 @@ class Application:
         self.revision_source.trace_add('write', self.refresh_file_names)
         root.after(100, self.poll)
 
+    def reveal_focus(self, event):
+        """Keep keyboard-focused controls visible when the small-window fallback scrolls."""
+        widget = event.widget
+        if self.content_panel not in self._parents(widget):
+            return
+        self.root.after_idle(lambda: self._reveal_widget(widget))
+
+    @staticmethod
+    def _parents(widget):
+        while widget is not None:
+            yield widget
+            widget = getattr(widget, 'master', None)
+
+    def _reveal_widget(self, widget):
+        if not widget.winfo_exists() or not widget.winfo_ismapped():
+            return
+        top = widget.winfo_rooty() - self.viewport.winfo_rooty()
+        bottom = top + widget.winfo_height()
+        height = self.viewport.winfo_height()
+        offset = top - 8 if top < 0 else bottom - height + 8 if bottom > height else 0
+        if offset:
+            total = max(1, self.content_panel.winfo_height())
+            self.viewport.yview_moveto((self.viewport.canvasy(0) + offset) / total)
+
     def refresh_file_names(self, *args):
         self.video_name.set(Path(self.path.get()).name if self.path.get() else 'No video chosen')
         self.document_name.set(Path(self.revision_source.get()).name if self.revision_source.get() else 'No document chosen')
@@ -215,6 +240,9 @@ class Application:
             self.bar.start(12)
         else:
             self.bar.stop()
+            self.open_button.configure(state="normal" if self.output else "disabled")
+            self.folder_button.configure(state="normal" if self.output else "disabled")
+            self.images_button.configure(state="normal" if self.images_folder else "disabled")
             self.details_button.configure(state="normal" if self.caption_details else "disabled")
 
     def start(self):

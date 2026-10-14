@@ -22,20 +22,25 @@ jobs:
       - name: Use the bundled FFmpeg in integration tests
         shell: pwsh
         run: Add-Content $env:GITHUB_PATH "$pwd/runtime/bin"
-      - run: python -m pytest -q
-      - run: ./scripts/build_windows.ps1 -SkipFetch
-      - name: Test the portable EXE away from the checkout and without Python on PATH
-        shell: pwsh
+      - run: python -m pytest -q --junitxml=review/test-results.xml
+      - name: Check Tk layout and keyboard navigation
+        run: python scripts/check_gui_states.py
+      - name: Exercise caption recovery and revision in Tk
         run: |
-          $exe = "$pwd/dist/EditDetector/EditDetector-CLI.exe"
-          $env:PATH = "$env:SystemRoot/System32;$env:SystemRoot"
-          $env:PYTHONPATH = ''
-          $env:EDIT_DETECTOR_RUNTIME = ''
-          Set-Location $env:RUNNER_TEMP
-          & $exe doctor
-          if ($LASTEXITCODE -ne 0) { throw 'Portable dependency check failed.' }
-          & $exe self-test --output "$env:RUNNER_TEMP/portable-smoke"
-          if ($LASTEXITCODE -ne 0) { throw 'Portable end-to-end test failed.' }
+          python scripts/make_sample.py review/three-shots.mp4
+          python scripts/smoke_gui.py review/three-shots.mp4 --output review/gui.docx --caption-failure --options-and-revise
+      - run: ./scripts/build_windows.ps1 -SkipFetch
+      - name: Validate the packaged CLI away from the checkout
+        run: python scripts/validate_portable.py dist/EditDetector --output "${{ runner.temp }}/portable-review"
+      - name: Upload review evidence even if a check fails
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Windows-review-evidence
+          path: |
+            review/
+            ${{ runner.temp }}/portable-review/
+          retention-days: 14
       - uses: actions/upload-artifact@v4
         with:
           name: EditDetector-Windows-x64

@@ -60,7 +60,7 @@ def configure_theme(root):
 class Card(tk.Canvas):
     """Rounded background around a normal, keyboard-accessible widget container."""
     def __init__(self, parent, *, color=CARD, border=BORDER, padding=20, radius=12):
-        super().__init__(parent, background=BG, highlightthickness=0, borderwidth=0, height=1)
+        super().__init__(parent, background=BG, highlightthickness=0, borderwidth=0, height=1, takefocus=0)
         self.color, self.border, self.padding, self.radius = color, border, padding, radius
         self.content = tk.Frame(self, background=color)
         self.window = self.create_window(padding, padding, window=self.content, anchor='nw')
