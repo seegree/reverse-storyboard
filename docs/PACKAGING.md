@@ -2,7 +2,9 @@
 
 ## Current boundary
 
-PyInstaller needs Windows to build a Windows app. This session had macOS only. No EXE has been produced or presented as tested. The build definition is prepared; Windows native archives were downloaded and checksum-verified; matching OpenCV/Pillow Windows x64 wheels were downloaded. Freezing, DLL loading, startup and clean-machine execution remain unverified.
+The GUI and CLI executables were built by GitHub Actions on Windows Server 2022. The [successful run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862) passed 53 source tests, source Tk checks, and portable CLI validation from outside the checkout without Python/backend executables on PATH. The downloadable application artifact is 440,868,117 bytes compressed. Bundled dependencies, local inference, timecodes, JPEG exports, accented filenames and revision were exercised.
+
+The packaged GUI's hands-on appearance/startup on Windows 10/11, clean consumer-machine behavior, and offline operation remain outstanding. A server-runner check does not establish those properties.
 
 ## Build and folder layout
 
@@ -34,7 +36,7 @@ THIRD_PARTY.md
 
 Keep the folder together. There is no one-file extraction step or runtime download, server, API key or GPU dependency. The setup script runs only on developer/build machines. The 500M pair, sample media and download caches are not packaged.
 
-The included GitHub Actions workflow tests the source, builds the folder, changes outside the checkout, removes Python/backend executables from PATH, and runs portable dependency, inference, timecode, image-export and revision checks through `scripts/validate_portable.py`. It also runs source Tk layout/keyboard and caption-recovery checks and uploads a separate review-evidence artifact. The workflow has not been uploaded or executed in this session.
+The included GitHub Actions workflow tests the source, builds the folder, changes outside the checkout, removes Python/backend executables from PATH, and runs portable dependency, inference, timecode, image-export and revision checks through `scripts/validate_portable.py`. It also runs source Tk layout/keyboard and caption-recovery checks and uploads a separate review-evidence artifact. The workflow was uploaded to the private reverse-storyboard repository and executed successfully on 2026-10-14.
 
 ## Size evidence
 

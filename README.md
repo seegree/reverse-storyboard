@@ -2,7 +2,7 @@
 
 A working offline video-to-Word MVP: detect hard cuts, extract one midpoint still per shot, generate local AI captions, and save an editable DOCX with real numbering and embedded images. A minimal Tkinter GUI supports file selection, progress, cancellation and opening the result.
 
-The CLI and GUI have been exercised on macOS arm64. **A Windows executable has not yet been built or executed.** The Windows build script and CI workflow are prepared. **Caption accuracy remains an MVP limitation:** both tested small models make errors. Review captions before using the output. See [validation](docs/VALIDATION.md) and [stage status](docs/STATUS.md).
+The CLI and GUI have been exercised on macOS arm64. **The Windows GUI/CLI executables now build successfully in GitHub Actions; the packaged CLI passed automated runtime and output checks on Windows Server 2022.** Hands-on validation of the packaged GUI on Windows 10/11 remains outstanding. Download the app and review evidence from the [successful Windows run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862). **Caption accuracy remains an MVP limitation:** both tested small models make errors. Review captions before using the output. See [validation](docs/VALIDATION.md) and [stage status](docs/STATUS.md).
 
 ## Windows development setup
 
@@ -18,7 +18,7 @@ py -3.12 -m venv .venv
 
 The setup script downloads FFmpeg, FFprobe, the CPU build of llama.cpp, and the Q8 SmolVLM 256M model plus its matching Q8 vision projector. Downloads have pinned versions, immutable model revisions and SHA-256 checks. No Ollama, PyTorch, Transformers, API keys, web server or GPU is used.
 
-Once a portable Windows distribution has been built and validated, end users only unzip the entire folder and launch `EditDetector.exe`. Keep `runtime` and `_internal` beside the EXE. End users will not install Python or backends. That Windows validation is still outstanding.
+For the portable Windows distribution, end users unzip the entire folder and launch `EditDetector.exe`. Keep `runtime` and `_internal` beside the EXE. End users will not install Python or backends. Hands-on Windows 10/11 validation is still outstanding.
 
 If an individual caption fails, analysis continues and saves every shot image. The affected entries say **[Caption unavailable — add a description in Word.]**. Replace those placeholders in Word, or omit them when making a shorter version. The GUI's **Caption issues…** button lists the affected shot numbers and error details; CLI reports and exported image manifests also retain the errors. Cancellation still stops the operation, and missing runtime/model files are reported before analysis starts.
 

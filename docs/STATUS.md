@@ -1,6 +1,6 @@
 # Implementation checkpoints
 
-Updated 2026-10-13. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0.2.
+Updated 2026-10-14. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0.2.
 
 | Stage | Status | Evidence |
 | --- | --- | --- |
@@ -8,10 +8,10 @@ Updated 2026-10-13. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0
 | 2 Local captioning | Inference verified; quality needs work | Actual CPU runs with 256M and 500M Q8 pairs; deterministic/0.2 comparison; errors documented |
 | 3 Word output | Implemented and tested | Embedded images, real list numbering, aspect ratios, reopen, rendered page inspection |
 | 4 Integration | Implemented and tested | Four-shot motion clip, three-photo clip, three-color self-test; timing and memory measurements |
-| 5 GUI | Implemented and tested on Mac | Real Tk event loop, Analyze completion, Cancel without publishing output |
-| 6 Windows distribution | Prepared, not executed | Verified Windows archives/wheels, PyInstaller spec, build script and CI smoke test |
+| 5 GUI | Implemented; source GUI tested on Mac and Windows runner | Tk state, keyboard, analysis, caption recovery and revision checks |
+| 6 Windows distribution | Built and CLI verified in CI | Windows Server 2022, bundled inference and output checks; manual Windows 10/11 GUI review remains |
 
-The automated suite passes 27 tests. No Windows executable or benchmark is claimed. Caption accuracy does not yet meet a reliable automatic-acceptance standard.
+The automated suite passes 53 tests on Mac and Windows. Both Windows EXEs built; the bundled CLI passed automated checks. Caption accuracy does not yet meet a reliable automatic-acceptance standard.
 
 ## Checkpoints
 

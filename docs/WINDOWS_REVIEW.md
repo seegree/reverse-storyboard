@@ -1,8 +1,10 @@
 # Windows review from a Mac
 
-**Status:** Windows build and execution are pending. The Mac checks pass; they do not establish Windows compatibility.
+**Status:** [The first successful Windows run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862) built both EXEs and passed automated checks on Windows Server 2022. Hands-on packaged-GUI review on Windows 10/11 remains pending.
 
 ## Your Windows review area
+
+For short-term review without a subscription, open the successful run above and download **Windows-review-evidence**. Inspect its Word documents, JPEGs and logs on your Mac. Download **EditDetector-Windows-x64** when you have a PC available for hands-on testing. A Cloud PC is optional.
 
 Use [Windows 365 Business](https://www.microsoft.com/en-us/windows-365/business/all-pricing) for a Windows desktop accessible in your Mac browser. A 2-vCPU, 8-GB plan is a reasonable starting point for functional review; processing speed will depend on the Cloud PC. This is a paid service. Check current pricing and any trial terms yourself before subscribing. The app needs CPU inference, not a GPU.
 

@@ -81,3 +81,13 @@ Reduced nested padding and vertical gaps, moved analysis actions beside the opti
 Reviewed the compact Tk UI and fixed keyboard focus visibility in short windows, decorative canvas tab stops, and restoration of previous output actions after a failed/cancelled revision. Actual Mac Tk checks include keyboard traversal, 800×560 focus visibility, and previous result actions after a revision error. All 49 automated tests pass.
 
 Expanded the Windows CI definition with source Tk checks and a portable CLI verifier for real inference, timecodes, image exports, Unicode paths and revision, plus always-uploaded review evidence. Added a Mac-to-Windows review guide. Windows CI has not run: this checkout has no remote and its local GitHub CLI login reports an invalid token. No Windows binary, Cloud PC, repository or published review site was created. Browser-based Windows 365 Business is documented as an option; user subscription/setup is required.
+
+## First successful Windows build — 2026-10-14
+
+Private repository: https://github.com/seegree/reverse-storyboard
+Successful run: https://github.com/seegree/reverse-storyboard/actions/runs/38609269862
+Tested source commit: 9b0aa80
+
+Windows Server 2022 / Python 3.12: 53 source tests passed. Source Tk layout, keyboard and injected-caption-failure/revision checks passed. PyInstaller produced GUI and CLI EXEs. Portable CLI validation passed away from the checkout with developer Python/backends removed from child PATH: doctor 1.80s, self-test 37.80s, three-shot analysis with timecodes/JPEG export/Unicode paths 37.55s, revision 0.38s. This run had no malformed captions in its real-inference sample. Caption accuracy remains limited: the red color-frame caption invented text. The self-test now reports malformed model responses as recoverable warnings while runtime crashes/timeouts still fail it; details are saved to analysis.json.
+
+Artifacts: EditDetector-Windows-x64, 440,868,117 bytes compressed; Windows-review-evidence, 188,060 bytes. Review evidence was downloaded to ignored samples/windows-review-ready for Mac inspection. The full and shortened real-inference Word examples were rendered and visually inspected on Mac. Manual packaged-GUI testing on a clean Windows 10/11 PC and offline operation remain outstanding. No cloud Windows subscription or website preview is required to inspect the evidence.
