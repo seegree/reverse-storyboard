@@ -36,7 +36,10 @@ if args.caption_failure:
 root = tk.Tk()
 app = gui.Application(root)
 app.path.set(str(args.video.resolve()))
-root.report_callback_exception = lambda cls, value, tb: errors.append((cls.__name__, str(value)))
+def callback_error(cls, value, tb):
+    errors.append((cls.__name__, str(value)))
+    root.after_idle(root.destroy)
+root.report_callback_exception = callback_error
 if args.options_and_revise:
     app.include_timecodes.set(True)
     app.export_images.set(True)
@@ -51,6 +54,7 @@ def inspect():
         root.destroy()
         return
     if app.worker is not None and not app.worker.is_alive() and app.events.empty():
+        root.update_idletasks()
         if args.caption_failure and not revised:
             assert "Shot 3:" in app.caption_details
             assert str(app.details_button['state']) == 'normal'
@@ -85,6 +89,11 @@ def inspect():
     root.after(50, inspect)
 
 
+def deadline():
+    app.stop()
+    errors.append(("Timeout", "GUI did not complete in 120 seconds"))
+    root.destroy()
+root.after(120000, deadline)
 root.after(100, app.start)
 if args.cancel:
     root.after(400, app.stop)

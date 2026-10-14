@@ -11,6 +11,7 @@ permissions:
 jobs:
   portable:
     runs-on: windows-2022
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,6 +27,7 @@ jobs:
       - name: Check Tk layout and keyboard navigation
         run: python scripts/check_gui_states.py
       - name: Exercise caption recovery and revision in Tk
+        timeout-minutes: 3
         run: |
           python scripts/make_sample.py review/three-shots.mp4
           python scripts/smoke_gui.py review/three-shots.mp4 --output review/gui.docx --caption-failure --options-and-revise
