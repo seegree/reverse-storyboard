@@ -67,3 +67,28 @@ def test_cancel_during_caption_never_publishes_document(staged_video, tmp_path):
         analyze(video, tmp_path / "cancelled.docx", captioner=CancellingCaptioner(), cancel=cancel)
     assert not (tmp_path / "cancelled.docx").exists()
     assert all(not p.exists() for p in frames)
+
+
+def test_optional_exports_and_rollback(staged_video, tmp_path, monkeypatch):
+    import json
+    from docx import Document
+    video, frames = staged_video
+    class FixtureCaptioner:
+        def caption(self, image, **kw):
+            return Caption('Red cup', '', 0, 1)
+    folder = tmp_path / 'images'
+    result = analyze(video, tmp_path / 'timed.docx', captioner=FixtureCaptioner(), include_timecodes=True, export_images=folder)
+    assert result.images_folder == str(folder)
+    assert len(list(folder.glob('*.jpg'))) == 2
+    assert len(json.loads((folder / 'shots.json').read_text())['shots']) == 2
+    assert '00:00:01.000 – 00:00:02.000' in Document(result.output).paragraphs[4].text
+    with pytest.raises(AppError, match='already in use'):
+        analyze(video, tmp_path / 'other.docx', captioner=FixtureCaptioner(), export_images=folder)
+    def fail(*args, **kwargs):
+        raise AppError('write failed')
+    monkeypatch.setattr('edit_detector.pipeline.write_document', fail)
+    rollback = tmp_path / 'rollback'
+    with pytest.raises(AppError, match='write failed'):
+        analyze(video, tmp_path / 'failed.docx', captioner=FixtureCaptioner(), export_images=rollback)
+    assert not rollback.exists()
+    assert not (tmp_path / 'failed.docx').exists()

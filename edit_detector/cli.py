@@ -28,6 +28,14 @@ def main(argv=None) -> int:
     full.add_argument("--min-scene-frames", type=int, default=2)
     full.add_argument("--overwrite", action="store_true")
     full.add_argument("--report", type=Path, help="Optional JSON diagnostics and stage timings")
+    full.add_argument("--timecodes", action="store_true", help="Include elapsed start/end timecodes in Word")
+    full.add_argument("--export-images", action="store_true", help="Keep a numbered JPEG folder beside the document")
+    full.add_argument("--images-dir", type=Path, help="Export JPEGs to this new folder instead")
+    revise = sub.add_parser("revise", help="Keep selected shots from an existing Word document and renumber them")
+    revise.add_argument("document", type=Path)
+    revise.add_argument("--keep", required=True, help="Shot numbers separated by spaces or commas, e.g. '3 6 11'")
+    revise.add_argument("--output", "-o", type=Path)
+    revise.add_argument("--overwrite", action="store_true")
     single = sub.add_parser("caption", help="Test local AI on one still image")
     single.add_argument("image", type=Path)
     for item in (full, single):
@@ -45,6 +53,11 @@ def main(argv=None) -> int:
         if args.command == "gui":
             from .gui import main as gui_main
             gui_main()
+        elif args.command == "revise":
+            from .revision import revise_document
+            output = args.output or args.document.with_name(args.document.stem + "-selected.docx")
+            result = revise_document(args.document, args.keep, output, overwrite=args.overwrite)
+            print(f"Saved {len(result.kept_numbers)} of {result.original_count} shots, renumbered from 1, to {result.output}")
         elif args.command == "self-test":
             from .selftest import run_selftest
             run_selftest(args.output)
@@ -78,11 +91,15 @@ def main(argv=None) -> int:
                     if args.report.exists() and not args.overwrite:
                         raise AppError("The diagnostic report already exists. Choose another path or use --overwrite.")
                 result = analyze(args.video, output, captioner=captioner, threshold=args.threshold,
-                                 min_scene_frames=args.min_scene_frames, overwrite=args.overwrite, progress=progress)
+                                 min_scene_frames=args.min_scene_frames, overwrite=args.overwrite, progress=progress,
+                                 include_timecodes=args.timecodes,
+                                 export_images=args.images_dir or (output.with_name(output.stem + "-images") if args.export_images else None))
                 if args.report:
                     args.report.parent.mkdir(parents=True, exist_ok=True)
                     args.report.write_text(json.dumps(result.record(), indent=2), encoding="utf-8")
                 print(f"Saved {len(result.shots)} shots to {result.output} in {result.timings['total_seconds']:.2f}s")
+                if result.images_folder:
+                    print(f"Images: {result.images_folder}")
         return 0
     except (AppError, OSError) as exc:
         print(f"Error: {exc}", file=sys.stderr)

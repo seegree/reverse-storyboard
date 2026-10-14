@@ -11,10 +11,10 @@ from .errors import AppError
 from .process import check_cancel, run_process
 
 PROMPT = (
-    "Describe the visible subjects and setting in one short, factual sentence. "
-    "Use present tense. Do not speculate. Output only the caption."
+    "Describe the visible subjects and setting briefly and factually. "
+    "A short phrase is fine. Do not speculate. Output only the description."
 )
-RETRY_PROMPT = "Describe what is visible in this image in one simple sentence. Output only that sentence."
+RETRY_PROMPT = "Briefly describe what is visible in this image. A short phrase is fine. Output only the description."
 
 
 def clean_caption(raw: str) -> str:
@@ -26,11 +26,11 @@ def clean_caption(raw: str) -> str:
     # Keep the first sentence, but never mechanically cut off a sentence at word 20.
     first = re.split(r"(?<=[.!?])\s+", text, maxsplit=1)[0].strip('" ')
     words = first.split()
-    if (not 4 <= len(words) <= 35 or not re.search(r"[A-Za-z]", first)
+    if (not 2 <= len(words) <= 35 or not re.search(r"[A-Za-z]", first)
             or re.search(r"<\|?|\|>|https?://|\b(?:sorry|cannot|can't|unable|as an ai)\b", first, re.I)
             or re.search(r"\b(\w+)(?:\s+\1){2}\b", first, re.I)):
         raise ValueError("The model did not return a usable short caption.")
-    return first[0].upper() + first[1:].rstrip(".!? ") + "."
+    return first[0].upper() + first[1:]
 
 
 @dataclass(frozen=True)

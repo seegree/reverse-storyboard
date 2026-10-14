@@ -26,3 +26,7 @@ The automated suite passes 27 tests. No Windows executable or benchmark is claim
 4. Measure Windows startup, RAM and actual compressed/folder size. Prepare redistribution source/notice materials before a public binary release.
 
 No database, network service, cloud API, GPU requirement or heavyweight Python ML framework was introduced. File selection is implemented; drag-and-drop is deferred to avoid another GUI dependency.
+
+## Workflow additions — 2026-10-14
+
+Implemented optional elapsed timecodes, persistent numbered JPEG exports with a JSON manifest, short phrase captions, and revision of existing app-generated Word documents by shot-number selection. Revision preserves the original and needs neither video nor model files. Validated with 38 passing tests, real Mac GUI execution and rendered DOCX inspection; see VALIDATION.md.

@@ -46,3 +46,12 @@ A simpler prompt worked better than a long list of constraints for 256M. Bounded
 Local `samples/` contains inputs, DOCX outputs, reports, comparisons and render images and is ignored by Git. Small JSON reports are copied to `docs/validation/` for preservation. Test media are not bundled in the app.
 
 Sources: [OpenCV Megamind sample](https://github.com/opencv/opencv/blob/4.x/samples/data/Megamind.avi), [scikit-image v0.19.3 data](https://github.com/scikit-image/scikit-image/tree/v0.19.3/skimage/data) (`coffee.png`, `chelsea.png`, `astronaut.png`). The photo video is a generated slideshow fixture; the OpenCV clip is the separate motion-video test.
+
+## Output options and revision — 2026-10-14
+
+- All 38 automated tests pass on macOS arm64. Added coverage for the requested selection of 10 shots from a 51-shot fixture, preserved source bytes and caption formatting, shared images, removed unused media, repeated revisions, invalid selections, elapsed time formatting, exported manifests and export rollback on document failure.
+- Real local inference on `samples/photo-demo.mp4`: three shots exported with timecodes and a persistent JPEG folder in 3.90 seconds. Phrase output was accepted (for example, “Cat, background is blurry.”). Caption factual errors remain: the coffee was described as tea.
+- Revised the new document from three shots to two, and an older MVP document from four shots to two, without model inference.
+- Rendered and visually checked both pages of the timecoded sample and the single page of its shortened version. Numbering, image placement and retained time ranges are correct.
+- Actual Tk GUI worker/event-loop smoke test passed with both options enabled and a subsequent selection of shots 1 and 3. The resulting document contains two images and timecodes; its displayed list restarts at 1.
+- Windows execution remains untested.

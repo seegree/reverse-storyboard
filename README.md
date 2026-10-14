@@ -20,6 +20,14 @@ The setup script downloads FFmpeg, FFprobe, the CPU build of llama.cpp, and the 
 
 Once a portable Windows distribution has been built and validated, end users only unzip the entire folder and launch `EditDetector.exe`. Keep `runtime` and `_internal` beside the EXE. End users will not install Python or backends. That Windows validation is still outstanding.
 
+## Output options and shorter versions
+
+The GUI has checkboxes for **Include elapsed timecodes** and **Also save a folder of shot images**. The image folder is saved beside the Word document, with numbered JPEGs and a `shots.json` manifest. Existing image folders are preserved by choosing a new folder name. With the checkbox off, intermediate images remain temporary.
+
+After analysis, **Make a shorter version** automatically uses the latest full document. Enter shot numbers such as `3 6 11 13 14 25 34 35 38 42`, then click **Save selected shots…**. Choose a new filename. The selected shots retain their captions, images, formatting and timecodes, in original order, with numbering restarted at 1. Spaces or commas work; duplicates are ignored. The source document stays intact. You can also choose an older Edit Detector Word document; no video or AI model is needed. Numbers refer to the selected source document's current list. The source field stays on the original document so you can make alternate selections.
+
+Timecodes show each shot's elapsed start and end in `HH:MM:SS.mmm`, calculated from nominal frame rate. Ends are exclusive. These are not embedded camera/SMPTE timecodes and are approximate for variable-frame-rate footage.
+
 ## Commands
 
 After activating the development environment, or using its Python executable directly:
@@ -32,6 +40,12 @@ python -m edit_detector extract input.mp4 --output shots
 python -m edit_detector analyze input.mp4
 python -m edit_detector analyze input.mov -o breakdown.docx --report timing.json
 
+# Optional timecodes and persistent JPEG folder
+python -m edit_detector analyze input.mp4 --timecodes --export-images
+
+# Make a new, shorter document without rerunning video or AI
+python -m edit_detector revise input-shots.docx --keep "3 6 11 13 14 25 34 35 38 42" -o selected.docx
+
 # Test local inference on one image
 python -m edit_detector caption picture.jpg
 
@@ -43,7 +57,7 @@ python -m edit_detector doctor
 python -m edit_detector self-test --output new-smoke-test-folder
 ```
 
-Use `--overwrite` explicitly to replace existing CLI output. The GUI save dialog confirms replacing a file. Failures and cancellation preserve a previous document. The full pipeline cleans up temporary JPEGs; the `extract` command intentionally keeps them and requires an empty output folder. The optional JSON report contains boundaries, frame indices, raw/cleaned captions, retries and stage timings. DOCX is the primary deliverable; no CSV is generated.
+Use `--overwrite` explicitly to replace existing CLI output. The GUI save dialog confirms replacing a file. Failures and cancellation preserve a previous document. Unless image export is enabled, the full pipeline cleans up temporary JPEGs; the `extract` command intentionally keeps them and requires an empty output folder. The optional JSON report contains boundaries, frame indices, raw/cleaned captions, retries and stage timings. DOCX is the primary deliverable; no CSV is generated.
 
 ## Detection and inference behavior
 
@@ -53,7 +67,7 @@ Use `--overwrite` explicitly to replace existing CLI output. The GUI save dialog
 - JPEGs fit within 1280×1280, preserve display aspect ratio including non-square pixels, and use FFmpeg autorotation. Detection uses OpenCV and extraction uses FFmpeg; codec support is their intersection. The first video stream is used. MP4/MOV/MKV/AVI support depends on the codec inside the container.
 - Inference uses local files and forces CPU execution for both model and projector with `--offline`. Each image gets a fresh CLI process, so no chat history carries between shots. Model reload cost is an accepted MVP tradeoff that avoids running a service.
 - Defaults: four CPU threads, temperature zero, seed 42, context 2,048 tokens, maximum 64 generated tokens, 120-second timeout. Change `--threads`, `--temperature`, or `--caption-timeout` as needed.
-- Cleanup keeps one sentence and retries malformed responses once. It does not validate facts. The intended 8–20 word length is approximate, and these models do not consistently follow it. Hallucination-free captions are **not** a verified property.
+- Captions may be short phrases or one sentence. Cleanup accepts descriptions of 2–35 words and retries malformed responses once. It does not validate facts. Hallucination-free captions are **not** a verified property.
 
 ## Optional 500M model
 

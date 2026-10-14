@@ -6,7 +6,7 @@ from edit_detector.errors import AppError
 
 def test_cleanup_preserves_one_sentence():
     assert clean_caption('Caption: A red cup sits on a table. There is a spoon.') == "A red cup sits on a table."
-    assert clean_caption('1. The image shows a cat beside a window') == "A cat beside a window."
+    assert clean_caption('1. The image shows a cat beside a window') == "A cat beside a window"
 
 
 @pytest.mark.parametrize("raw", ["", "Yes.", "I cannot describe this image.", "cat cat cat cat", "<|assistant|> A cat sits in the room."])
@@ -46,3 +46,8 @@ def test_retry_can_recover(monkeypatch, tmp_path):
 def test_missing_projector_pair(tmp_path):
     with pytest.raises(AppError, match="both"):
         LlamaCaptioner(model=tmp_path / "model.gguf")
+
+
+def test_short_phrases():
+    assert clean_caption("Red cup") == "Red cup"
+    assert clean_caption("Caption: cat face") == "Cat face"

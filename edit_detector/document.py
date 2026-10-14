@@ -3,6 +3,7 @@
 import os
 from pathlib import Path
 import tempfile
+import math
 
 from docx import Document
 from docx.oxml import OxmlElement
@@ -31,9 +32,11 @@ def _numbering(document) -> int:
 
 
 def write_document(video_name: str, images: list[Path], captions: list[str], output: Path,
-                   *, overwrite=False, cancel=None) -> Path:
+                   *, overwrite=False, cancel=None, timecodes: list[str] | None = None) -> Path:
     if not images or len(images) != len(captions):
         raise AppError("Every shot must have exactly one image and one caption.")
+    if timecodes is not None and len(timecodes) != len(images):
+        raise AppError("Every shot must have exactly one timecode range.")
     output = output.expanduser().resolve()
     if output.suffix.lower() != ".docx":
         raise AppError("The output filename must end in .docx.")
@@ -61,6 +64,10 @@ def write_document(video_name: str, images: list[Path], captions: list[str], out
     for i, (image, caption) in enumerate(zip(images, captions), 1):
         check_cancel(cancel)
         paragraph = document.add_paragraph(caption)
+        if timecodes is not None:
+            run = paragraph.add_run("\n" + timecodes[i - 1])
+            run.font.size = Pt(9)
+            run.font.color.rgb = RGBColor(90, 90, 90)
         props = paragraph._p.get_or_add_pPr().get_or_add_numPr()
         props.get_or_add_ilvl().val = 0
         props.get_or_add_numId().val = number_id
@@ -80,6 +87,26 @@ def write_document(video_name: str, images: list[Path], captions: list[str], out
     document.core_properties.title = "Video Shot Breakdown"
     document.core_properties.subject = video_name
     document.core_properties.author = ""
+    return save_document(document, output, overwrite=overwrite, cancel=cancel)
+
+
+def format_timecode(seconds: float) -> str:
+    """Elapsed video time, not embedded camera/SMPTE or drop-frame timecode."""
+    if not math.isfinite(seconds) or seconds < 0:
+        raise AppError("Timecodes require a nonnegative finite time.")
+    milliseconds = int(seconds * 1000 + 0.5)
+    hours, remainder = divmod(milliseconds, 3_600_000)
+    minutes, remainder = divmod(remainder, 60_000)
+    seconds, milliseconds = divmod(remainder, 1000)
+    return f"{hours:02d}:{minutes:02d}:{seconds:02d}.{milliseconds:03d}"
+
+
+def save_document(document, output: Path, *, overwrite=False, cancel=None) -> Path:
+    output = output.expanduser().resolve()
+    if output.suffix.lower() != ".docx":
+        raise AppError("The output filename must end in .docx.")
+    if output.exists() and not overwrite:
+        raise AppError(f"Output already exists: {output}. Choose another name or use --overwrite.")
     output.parent.mkdir(parents=True, exist_ok=True)
     # Do not leave half a DOCX, or destroy a previous result if generation fails.
     fd, temporary = tempfile.mkstemp(prefix=".shot-document-", suffix=".docx", dir=output.parent)
