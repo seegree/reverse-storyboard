@@ -54,7 +54,8 @@ def inspect():
         if args.caption_failure and not revised:
             assert "Shot 3:" in app.caption_details
             assert str(app.details_button['state']) == 'normal'
-            assert '1 captions need attention' in app.status.get()
+            assert '1 caption needs writing.' in app.warning_text.get()
+            assert app.warning.winfo_ismapped()
         if args.options_and_revise and not revised:
             assert app.images_folder.is_dir()
             assert app.revision_source.get() == str(args.output.resolve())

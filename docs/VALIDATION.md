@@ -63,3 +63,11 @@ Sources: [OpenCV Megamind sample](https://github.com/opencv/opencv/blob/4.x/samp
 ## Review fixes — 2026-10-14
 
 49 automated tests pass. Report paths equal to or inside either an explicit or automatically named image-export folder are rejected before analysis, including JPEG and manifest collisions and when overwrite is requested. A sibling report remains allowed. The actual Mac GUI regression test confirms that Caption issues remains clickable after revision and opens details labeled with the original document path and original shot numbering. Returning from an operation also restores available caption details after errors or cancellation.
+
+## Option A interface — 2026-10-14
+
+Implemented the layout, copy and dark palette from design/HANDOFF.md in Tkinter. Added rounded card containers, a scrollable window, filename displays with path tooltips, selection placeholder, separate caption warning banner and state-dependent controls. No processing, captioning, Word-writing or revision modules changed.
+
+All 49 automated tests pass. Actual Mac Tk runs passed for real-model analysis and for an injected caption failure followed by revision. scripts/check_gui_states.py checks idle, chosen video, progress, success, singular/plural warnings, revision, cancellation and errors, automatic source-document selection, placeholder behavior and horizontal button bounds. The app uses stage progress where supplied and an indeterminate indicator during detection/extraction; it does not invent overall progress percentages.
+
+Visual screenshot inspection was blocked by missing Computer Use permissions. The user opted to inspect the open fixture preview manually instead of granting broad app access. Visual acceptance remains pending that feedback. Windows execution remains untested. The static HTML and PNG references are not included in the application or source archive.

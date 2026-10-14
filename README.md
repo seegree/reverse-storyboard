@@ -24,9 +24,11 @@ If an individual caption fails, analysis continues and saves every shot image. T
 
 ## Output options and shorter versions
 
-The GUI has checkboxes for **Include elapsed timecodes** and **Also save a folder of shot images**. The image folder is saved beside the Word document, with numbered JPEGs and a `shots.json` manifest. Existing image folders are preserved by choosing a new folder name. With the checkbox off, intermediate images remain temporary.
+The dark Tkinter interface groups video selection, options and results into cards. Results appear when work begins; caption failures appear in a separate amber banner. The window scrolls on smaller displays.
 
-After analysis, **Make a shorter version** automatically uses the latest full document. Enter shot numbers such as `3 6 11 13 14 25 34 35 38 42`, then click **Save selected shots…**. Choose a new filename. The selected shots retain their captions, images, formatting and timecodes, in original order, with numbering restarted at 1. Spaces or commas work; duplicates are ignored. The source document stays intact. You can also choose an older Edit Detector Word document; no video or AI model is needed. Numbers refer to the selected source document's current list. The source field stays on the original document so you can make alternate selections.
+The GUI has checkboxes for **Add timecodes** and **Save shot images**. The image folder is saved beside the Word document, with numbered JPEGs and a `shots.json` manifest. Existing image folders are preserved by choosing a new folder name. With the checkbox off, intermediate images remain temporary.
+
+After analysis, **Make a shorter version** automatically uses the latest full document. Enter shot numbers such as `3 6 11 13 14 25 34 35 38 42`, then click **Save shorter version…**. Choose a new filename. The selected shots retain their captions, images, formatting and timecodes, in original order, with numbering restarted at 1. Spaces or commas work; duplicates are ignored. The source document stays intact. You can also choose an older Edit Detector Word document; no video or AI model is needed. Numbers refer to the selected source document's current list. The source field stays on the original document so you can make alternate selections.
 
 Timecodes show each shot's elapsed start and end in `HH:MM:SS.mmm`, calculated from nominal frame rate. Ends are exclusive. These are not embedded camera/SMPTE timecodes and are approximate for variable-frame-rate footage.
 
