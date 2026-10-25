@@ -1,26 +1,21 @@
 # Edit Detector
 
-A working offline video-to-Word MVP: detect hard cuts, extract one midpoint still per shot, generate local AI captions, and save an editable DOCX with real numbering and embedded images. A minimal Tkinter GUI supports file selection, progress, cancellation and opening the result.
+Turn an edited video into an editable Word storyboard. Edit Detector finds each hard cut, saves one still from the middle of every shot, writes a short AI caption for it, and builds a numbered DOCX with the images embedded. Everything runs offline on your computer: no account, no upload, no API key.
 
-The CLI and GUI have been exercised on macOS arm64. **The Windows GUI/CLI executables now build successfully in GitHub Actions; the packaged CLI passed automated runtime and output checks on Windows Server 2022.** Hands-on validation of the packaged GUI on Windows 10/11 remains outstanding. Download the app and review evidence from the [successful Windows run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862). **Caption accuracy remains an MVP limitation:** both tested small models make errors. Review captions before using the output. See [validation](docs/VALIDATION.md) and [stage status](docs/STATUS.md).
+## Use it (Windows)
 
-## Windows development setup
+1. Download the portable Windows build from a [successful Windows build run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862) (you need to be signed in to GitHub to download it).
+2. Unzip the **entire** folder. Keep `runtime` and `_internal` next to the EXE.
+3. Launch `EditDetector.exe`, click **Choose video…**, then **Analyze video**.
+4. Open the Word document it saves. **Review the captions:** the small local AI model makes mistakes.
 
-Use 64-bit Python 3.12 from python.org, including Tcl/Tk. Run these in the project folder in PowerShell. Internet is needed for developer setup only.
+No Python or other installs are needed. If a caption fails, the shot is still included with the note **[Caption unavailable — add a description in Word.]**. The **Caption issues…** button lists which shots were affected.
 
-```powershell
-py -3.12 -m venv .venv
-.venv\Scripts\python -m pip install -e ".[dev]"
-.venv\Scripts\python scripts/fetch_runtime.py --platform windows
-.venv\Scripts\python -m edit_detector doctor
-.venv\Scripts\python -m edit_detector gui
-```
+On macOS, run it from source (see [macOS development](#macos-development)).
 
-The setup script downloads FFmpeg, FFprobe, the CPU build of llama.cpp, and the Q8 SmolVLM 256M model plus its matching Q8 vision projector. Downloads have pinned versions, immutable model revisions and SHA-256 checks. No Ollama, PyTorch, Transformers, API keys, web server or GPU is used.
+## Status
 
-For the portable Windows distribution, end users unzip the entire folder and launch `EditDetector.exe`. Keep `runtime` and `_internal` beside the EXE. End users will not install Python or backends. Hands-on Windows 10/11 validation is still outstanding.
-
-If an individual caption fails, analysis continues and saves every shot image. The affected entries say **[Caption unavailable — add a description in Word.]**. Replace those placeholders in Word, or omit them when making a shorter version. The GUI's **Caption issues…** button lists the affected shot numbers and error details; CLI reports and exported image manifests also retain the errors. Cancellation still stops the operation, and missing runtime/model files are reported before analysis starts.
+The CLI and GUI have been exercised on macOS (Apple Silicon). The Windows build passes automated checks on Windows Server 2022; hands-on testing on Windows 10/11 is still outstanding. Caption accuracy is a known limitation. See [validation](docs/VALIDATION.md) and [stage status](docs/STATUS.md).
 
 ## Output options and shorter versions
 
@@ -82,6 +77,20 @@ python -m edit_detector analyze input.mp4 -o larger-model.docx --model runtime/m
 
 Always replace the model and matching projector together. The 256M pair totals 278,824,384 bytes; the 500M pair totals 545,590,272 bytes. The larger model did not consistently improve accuracy in the test set, so 256M remains the default. A replacement captioner only needs a `caption(image, cancel=...)` method returning a `Caption`; it can be passed to `pipeline.analyze`.
 
+## Windows development setup
+
+Use 64-bit Python 3.12 from python.org, including Tcl/Tk. Run these in the project folder in PowerShell. Internet is needed for developer setup only.
+
+```powershell
+py -3.12 -m venv .venv
+.venv\Scripts\python -m pip install -e ".[dev]"
+.venv\Scripts\python scripts/fetch_runtime.py --platform windows
+.venv\Scripts\python -m edit_detector doctor
+.venv\Scripts\python -m edit_detector gui
+```
+
+The setup script downloads FFmpeg, FFprobe, the CPU build of llama.cpp, and the Q8 SmolVLM 256M model plus its matching Q8 vision projector. Downloads have pinned versions, immutable model revisions and SHA-256 checks. No Ollama, PyTorch, Transformers, API keys, web server or GPU is used.
+
 ## Tests and Windows packaging
 
 ```sh
@@ -115,7 +124,7 @@ python3.12 -m venv .venv
 .venv/bin/python -m edit_detector analyze input.mp4
 ```
 
-The GUI needs a Python build with Tk: check `python -m tkinter`. Some Homebrew Python builds omit `_tkinter`. GUI tests in this workspace used Codex's bundled Python/Tk 9 because the project venv's base Python lacks Tk. This limitation does not apply to the standard Windows python.org installer.
+The GUI needs a Python build with Tk: check `python -m tkinter`. Some Homebrew Python builds omit `_tkinter`. The standard Windows python.org installer includes Tk.
 
 Set `EDIT_DETECTOR_RUNTIME` to an absolute alternate runtime directory if needed. Source builds can find tools on PATH; packaged builds use only bundled files so developer installations cannot silently hide missing dependencies.
 
