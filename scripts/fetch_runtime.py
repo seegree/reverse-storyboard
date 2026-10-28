@@ -34,6 +34,7 @@ MODELS = {
 FFMPEG_FILE = "ffmpeg-9.0.2-essentials_build.zip"
 FFMPEG_URL = "https://www.gyan.dev/ffmpeg/builds/packages/" + FFMPEG_FILE
 FFMPEG_SHA256 = "60f467265b1e312373dbcd92200c2618a74850f98d3d078e94296bb3fa2047ba"
+MACOS_FFMPEG_BASE = "https://ffmpeg.martin-riedl.de/download/macos/arm64/1789931890_9.0.2"
 
 
 def sha256(path):
@@ -64,6 +65,21 @@ def download(url, path, expected):
         temporary.unlink(missing_ok=True)
 
 
+def download_macos_ffmpeg(name, destination):
+    """Fetch the pinned Apple Silicon FFmpeg release and verify its published SHA-256."""
+    url = f"{MACOS_FFMPEG_BASE}/{name}.zip"
+    checksum_url = url + ".sha256"
+    request = urllib.request.Request(checksum_url, headers={"User-Agent": "EditDetector-Setup/0.1"})
+    with urllib.request.urlopen(request, timeout=60) as response:
+        checksum_text = response.read(4096).decode("ascii")
+    expected = checksum_text.strip().split()[0].lower()
+    if len(expected) != 64 or any(char not in "0123456789abcdef" for char in expected):
+        raise RuntimeError(f"Invalid SHA-256 sidecar for {name}")
+    archive = destination / f"{name}-9.0.2-macos-arm64.zip"
+    download(url, archive, expected)
+    return archive, expected, url
+
+
 def unpack_selected(archive, destination, *, kind):
     """Copy only regular files by basename; never follow archive links or paths."""
     destination.mkdir(parents=True, exist_ok=True)
@@ -71,6 +87,8 @@ def unpack_selected(archive, destination, *, kind):
         base = Path(name).name
         if kind == "ffmpeg":
             return base in ("ffmpeg.exe", "ffprobe.exe", "LICENSE", "LICENSE.txt", "README.txt")
+        if kind == "ffmpeg-macos":
+            return base in ("ffmpeg", "ffprobe", "LICENSE", "LICENSE.txt", "README.txt")
         return (base in ("llama-mtmd-cli", "llama-mtmd-cli.exe", "LICENSE", "llama.dll", "llama-common.dll", "mtmd.dll", "libomp.dll")
                 or base.startswith("ggml") and base.endswith(".dll")
                 or base.startswith(("libggml", "libllama.", "libllama-common.", "libmtmd")) and base.endswith(".dylib"))
@@ -116,7 +134,16 @@ def main():
             unpack_selected(archive, root / "bin", kind="ffmpeg")
             record["files"].append({"name": FFMPEG_FILE, "url": FFMPEG_URL, "sha256": FFMPEG_SHA256})
         else:
-            print("macOS developer runtime: FFmpeg 7+ and FFprobe must already be on PATH.")
+            downloads = root / "downloads"
+            for name in ("ffmpeg", "ffprobe"):
+                archive, digest, url = download_macos_ffmpeg(name, downloads)
+                unpack_selected(archive, root / "bin", kind="ffmpeg-macos")
+                record["files"].append({"name": archive.name, "url": url, "sha256": digest})
+            for name in ("ffmpeg", "ffprobe"):
+                binary = root / "bin" / name
+                if not binary.is_file():
+                    raise RuntimeError(f"Apple Silicon FFmpeg archive did not contain {name}")
+                binary.chmod(0o755)
     (root / f"manifest-{args.model}.json").write_text(json.dumps(record, indent=2), encoding="utf-8")
     print(f"Runtime ready: {root}")
 

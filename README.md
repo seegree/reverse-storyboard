@@ -2,16 +2,24 @@
 
 Turn an edited video into an editable Word storyboard. Edit Detector finds each hard cut, saves one still from the middle of every shot, writes a short AI caption for it, and builds a numbered DOCX with the images embedded. Everything runs offline on your computer: no account, no upload, no API key.
 
-## Use it (Windows)
+## Downloads
 
-1. Download the portable Windows build from a [successful Windows build run](https://github.com/seegree/reverse-storyboard/actions/runs/38609269862) (you need to be signed in to GitHub to download it).
-2. Unzip the **entire** folder. Keep `runtime` and `_internal` next to the EXE.
-3. Launch `EditDetector.exe`, click **Choose video…**, then **Analyze video**.
-4. Open the Word document it saves. **Review the captions:** the small local AI model makes mistakes.
+Choose the build that matches your computer. Download the named app artifact from the **latest successful** run for that platform. You need to be signed in to this private GitHub repository. The `Windows-review-evidence` artifact contains reports and sample outputs; it is not the app.
 
-No Python or other installs are needed. If a caption fails, the shot is still included with the note **[Caption unavailable — add a description in Word.]**. The **Caption issues…** button lists which shots were affected.
+### Windows 10/11 (64-bit)
 
-On macOS, run it from source (see [macOS development](#macos-development)).
+1. Open [Windows portable build runs](https://github.com/seegree/reverse-storyboard/actions/workflows/windows.yml) and select the latest run with a green checkmark.
+2. Under **Artifacts**, download **Reverse-Storyboard-Windows-x64** and unzip it once.
+3. Open the **EditDetector** folder, keep all its contents together, then double-click `EditDetector.exe`.
+4. Choose a video and click **Analyze video**. Review the captions; the small local model can make mistakes.
+
+### macOS (Apple Silicon)
+
+1. Open [macOS portable build runs](https://github.com/seegree/reverse-storyboard/actions/workflows/macos.yml) and select the latest run with a green checkmark.
+2. Under **Artifacts**, download **Reverse-Storyboard-macOS-arm64** and unzip it once.
+3. Open **Reverse Storyboard.app**. On first launch, Control-click it and choose **Open** if macOS blocks it; the app is not Developer ID signed or notarized.
+
+Both builds include the model and media tools; no Python, Homebrew, or internet connection is needed to run the app. If a caption fails, the shot remains in the Word document with **[Caption unavailable — add a description in Word.]**; **Caption issues…** lists affected shots.
 
 ## Status
 
@@ -124,7 +132,19 @@ python3.12 -m venv .venv
 .venv/bin/python -m edit_detector analyze input.mp4
 ```
 
-The GUI needs a Python build with Tk: check `python -m tkinter`. Some Homebrew Python builds omit `_tkinter`. The standard Windows python.org installer includes Tk.
+The GUI needs a Python build with Tk: check `python -m tkinter`. Some Homebrew Python builds omit `_tkinter`. The Windows python.org installer includes Tk.
+
+## Build the portable macOS app
+
+On an Apple Silicon Mac with Python 3.12 and Tk available:
+
+```sh
+python3.12 -m venv .venv
+.venv/bin/python -m pip install -e '.[dev]'
+PYTHON=.venv/bin/python bash scripts/build_macos.sh
+```
+
+The script fetches the pinned Apple Silicon llama.cpp runtime, FFmpeg 9.0.2, and 256M model, then creates `dist/Reverse-Storyboard-macOS-arm64.zip`. The app and all runtime/model files live inside `Reverse Storyboard.app`. See [packaging notes](docs/PACKAGING.md).
 
 Set `EDIT_DETECTOR_RUNTIME` to an absolute alternate runtime directory if needed. Source builds can find tools on PATH; packaged builds use only bundled files so developer installations cannot silently hide missing dependencies.
 

@@ -1,6 +1,6 @@
 # Implementation checkpoints
 
-Updated 2026-10-14. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0.2.
+Updated 2026-10-28. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0.2.
 
 | Stage | Status | Evidence |
 | --- | --- | --- |
@@ -10,6 +10,7 @@ Updated 2026-10-14. Working environment: macOS arm64, Python 3.12.14, FFmpeg 9.0
 | 4 Integration | Implemented and tested | Four-shot motion clip, three-photo clip, three-color self-test; timing and memory measurements |
 | 5 GUI | Implemented; source GUI tested on Mac and Windows runner | Tk state, keyboard, analysis, caption recovery and revision checks |
 | 6 Windows distribution | Built and CLI verified in CI | Windows Server 2022, bundled inference and output checks; manual Windows 10/11 GUI review remains |
+| 7 macOS distribution | Apple Silicon app ZIP built locally; clean launch review remains | Bundled Tk app, FFmpeg/FFprobe, llama.cpp and model; no Python/Homebrew runtime dependency |
 
 The automated suite passes 53 tests on Mac and Windows. Both Windows EXEs built; the bundled CLI passed automated checks. Caption accuracy does not yet meet a reliable automatic-acceptance standard.
 
@@ -30,3 +31,7 @@ No database, network service, cloud API, GPU requirement or heavyweight Python M
 ## Workflow additions — 2026-10-14
 
 Implemented optional elapsed timecodes, persistent numbered JPEG exports with a JSON manifest, short phrase captions, and revision of existing app-generated Word documents by shot-number selection. Revision preserves the original and needs neither video nor model files. Validated with 38 passing tests, real Mac GUI execution and rendered DOCX inspection; see VALIDATION.md.
+
+## Apple Silicon portable package — 2026-10-28
+
+Added a Finder-launchable app bundle and GitHub Actions workflow that produce `Reverse-Storyboard-macOS-arm64.zip`. The app includes Tk, the 256M model pair, llama.cpp, static FFmpeg/FFprobe and third-party notices. A local ZIP was built from the Tk-enabled Python runtime; a clean-account launch and full packaged-app run remain outstanding. The app is not Developer ID signed or notarized.

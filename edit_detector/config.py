@@ -11,6 +11,9 @@ def runtime_root() -> Path:
     if override:
         return Path(override).expanduser().resolve()
     if getattr(sys, "frozen", False):
+        if sys.platform == "darwin":
+            # PyInstaller stores app-specific, large runtime assets in Resources.
+            return Path(sys.executable).resolve().parent.parent / "Resources" / "runtime"
         return Path(sys.executable).parent / "runtime"
     return Path(__file__).resolve().parent.parent / "runtime"
 

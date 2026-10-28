@@ -4,7 +4,7 @@
 
 ## Your Windows review area
 
-For short-term review without a subscription, open the successful run above and download **Windows-review-evidence**. Inspect its Word documents, JPEGs and logs on your Mac. Download **EditDetector-Windows-x64** when you have a PC available for hands-on testing. A Cloud PC is optional.
+For short-term review without a subscription, open the successful run above and download **Windows-review-evidence**. Inspect its Word documents, JPEGs and logs on your Mac. Download **Reverse-Storyboard-Windows-x64** when you have a PC available for hands-on testing. A Cloud PC is optional.
 
 Use [Windows 365 Business](https://www.microsoft.com/en-us/windows-365/business/all-pricing) for a Windows desktop accessible in your Mac browser. A 2-vCPU, 8-GB plan is a reasonable starting point for functional review; processing speed will depend on the Cloud PC. This is a paid service. Check current pricing and any trial terms yourself before subscribing. The app needs CPU inference, not a GPU.
 
@@ -18,7 +18,7 @@ A cloud review uploads your selected test video to that Cloud PC. Start with gen
 
 The private repository is [seegree/reverse-storyboard](https://github.com/seegree/reverse-storyboard). The first Windows build was started on 2026-10-14. Open [Windows portable build runs](https://github.com/seegree/reverse-storyboard/actions/workflows/windows.yml) to see the current result.
 
-A successful run provides **EditDetector-Windows-x64** (the portable app) and **Windows-review-evidence** (reports and test output). A failed run still attempts to upload available review evidence. Sign in to GitHub with access to the private repository to download artifacts. Future pushes to main start another build; you can also use **Actions → Windows portable build → Run workflow**.
+A successful current run provides **Reverse-Storyboard-Windows-x64** (the portable app) and **Windows-review-evidence** (reports and test output). A failed run still attempts to upload available review evidence. Sign in to GitHub with access to the private repository to download artifacts. Future pushes to main start another build; you can also use **Actions → Windows portable build → Run workflow**.
 
 The Cloud PC subscription/setup has not been performed. You can review the automated Windows outputs on your Mac and transfer the portable folder to an available PC for hands-on testing instead of subscribing to a Cloud PC.
 

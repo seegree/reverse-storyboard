@@ -1,4 +1,14 @@
-# Windows portable build
+# Portable builds
+
+## macOS Apple Silicon
+
+`bash scripts/build_macos.sh` builds `dist/Reverse-Storyboard-macOS-arm64.zip` on an arm64 Mac. It contains `Reverse Storyboard.app`; the app bundle includes Python/Tk application code, the Apple Silicon llama.cpp runtime, static FFmpeg/FFprobe 9.0.2, the 256M model pair, and third-party notices. It does not require Python, Homebrew, or network access at runtime. `edit_detector.config.runtime_root()` locates the runtime under `Contents/Resources/runtime`.
+
+GitHub Actions builds on an Apple Silicon `macos-15` runner and publishes the app as **Reverse-Storyboard-macOS-arm64** for 14 days. Downloading that artifact gives a ZIP; extract it once to reveal the app bundle. The build is ad-hoc signed, not Developer ID signed or notarized. On first launch after download, macOS may require Control-click → Open. Intel Macs are not supported by this package. This is a portable beta archive, not a `.dmg` installer.
+
+The Mac workflow builds the distributable app but does not yet perform a clean-account launch or full packaged-app acceptance pass. Those remain manual release checks.
+
+## Windows portable build
 
 ## Current boundary
 
